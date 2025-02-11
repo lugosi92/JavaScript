@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <div id = "div">
+        <p id = "p1">Hola</p>
+        <p id = "p2">Holaaa</p>
+        <p id = "p3">Holaa</p>
+    </div>
+
+    <p id = "p4">aqaa</p>
+
+    <script>
+        const p3 = document.getElementById("p3");
+    //     p3.addEventListener("click", function() {
+    //         alert("Has hecho clic en el p3");
+    // });
+
+    // const div = document.getElementById("div");
+    // div.addEventListener("click", function() {
+    //         alert("Has hecho clic en el div");
+    // });
+
+//     const p4 = document.getElementById("p4");
+//     const listaP = div.querySelectorAll("p");
+   
+//     for(let i = 0; i < listaP.length; i++){
+        
+//         let text = listaP[i].innerHTML;
+
+//         listaP[i].addEventListener("click", function() {
+//             p4.innerHTML = text;
+//     });
+
+//     if(i === 2){
+//     listaP[i].removeEventListener("click", myFunction);
+//     }
+        
+// }
+
+
+const listaP = div.querySelectorAll("p");
+   
+   for (let i = 0; i < listaP.length; i++) {
+
+           listaP[i].addEventListener("mouseenter", function() {
+            if(i === 0){
+                console.log("Has entrado en P1");
+            }else if(i === 1){
+                console.log("Has entrado en P2");
+            }else{
+                console.log("Has entrado en P3");
+            }
+               
+           });
+
+           listaP[i].addEventListener("mouseleave", function() {
+            if(i === 0){
+                console.log("Has salido en P1");
+            }else if(i === 1){
+                console.log("Has salido en P2");
+            }else{
+                console.log("Has salido en P3");
+            }
+           });
+           
+       }
+    
+    </script>
+
+<script>
+
+
+    //LLAMA A UN ID, CREA UNA ETIQUETA , METE TEXTO Y LO INSTERTA
+    let altaLector = document.getElementById("alta-lector");
+    let bienvenido = document.createElement("p");
+    bienvenido.innerHTML = "Gracias Neil";
+    altaLector.appendChild(bienvenido);
+
+    //Coger etqieta y cambiar a italica
+    let h2 = altaLector.querySelector("h2"); 
+    h2.innerHTML = "<i>Alta Lector</i>";
+
+    //Quitar la p
+    altaLector.removeChild(bienvenido);
+
+    //poner en la ultima seccion 
+    let devolucionPrestamo = document.getElementById("devolucion-prestamo");
+    devolucionPrestamo.appendChild(bienvenido);
+
+    let botonMorado = document.getElementById("devolucion-boton");
+    let botonPeru = document.getElementById("prestamo-boton");
+
+
+    botonMorado.style.backgroundColor = "purple"; 
+    botonPeru.style.backgroundColor = "peru"; 
+
+    let letras = document.getElementById("devolucion-prestamo");
+    let label = letras.querySelectorAll("label");
+
+    for(let i = 0; i < 	label.length; i++){
+        label[i].style.color = "pink";
+        console.log(i);
+    }
+
+
+    //Gestion d evento 
+    addEventListener( )
+</script>
+</body>
+</html>

@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Leer Fichero</title>
+</head>
+<style>
+    body{
+        width: 100%;
+        text-align: center;
+    }
+    fieldset{
+        width: 16%;
+        border-radius: 10px;
+        border: 2px solid black;
+        background-color: antiquewhite;
+    }
+    legend{
+        font-weight: bold;
+    }
+    .monitores{
+        display: flex;
+        position: relative;
+        gap: 1px;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+    }
+</style>
+<body>
+    <h1>Listado de Monitores</h1>
+    <div class="monitores">
+        <fieldset>
+            <legend>Monitor 1</legend>
+            <p id="monitor1"></p> 
+        </fieldset>
+        <br>
+        <fieldset>
+            <legend>Monitor 2</legend>
+            <p id="monitor2"></p> 
+        </fieldset>
+        <br>
+        <fieldset>
+            <legend>Monitor 3</legend>
+            <p id="monitor3"></p> 
+        </fieldset>
+        <br>
+        <fieldset>
+            <legend>Monitor 4</legend>
+            <p id="monitor4"></p> 
+        </fieldset>
+    </div>
+    
+<script src="../js/leerFichero2.js"></script>
+</body>
+</html>

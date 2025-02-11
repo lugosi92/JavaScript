@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Calculadora</title>
+  </head>
+  <body>
+    <h1>Calculadora</h1>
+    <label for="num1">Número 1:</label><br />
+    <input type="number" id="num1" name="num1"><br /><br />
+    <label for="num2">Número 2:</label><br />
+    <input type="number" id="num2" name="num2"><br /><br />
+    <button onclick="calculator()">+</button>
+    <button onclick="calculator()">-</button>
+    <button onclick="clearResult()">C</button><br />
+    <p id="result"></p>
+    
+    <script>
+      function calculator() {
+        let num1 = document.getElementById("num1").value;
+        let num2 = document.getElementById("num2").value;
+        
+        if (isNaN(num1) || isNaN(num2)) {
+          alert("Please enter valid numbers");
+          return false;
+        } else {
+          let result = eval(num1 + "+" + num2);
+          document.getElementById("result").innerHTML = result;
+        }
+      }
+      
+      function clearResult() {
+        document.getElementById("result").innerHTML = "";
+      }
+    </script>
+  </body>
+</html>

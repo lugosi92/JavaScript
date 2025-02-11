@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Precios</title>
+</head>
+<style>
+    body{
+        font-family: Arial, Helvetica, sans-serif;
+    }
+    table{
+        border: 1px solid black;
+    }
+    td {
+        border: 1px solid black;
+        padding: 20px;
+        background-color: cadetblue;
+
+    }
+    th {
+        border: 1px solid black;
+        padding: 20px;
+    }
+    .encabezado {
+        background-color: cadetblue;
+        text-align: center;
+    }
+    .fecha {
+        background-color: cadetblue;
+    }
+    .precios {
+        background-color: cadetblue;
+    }
+    .descuento{
+        text-decoration: underline;
+    }
+    .nombre {
+        background-color: cadetblue;
+        text-align: center;
+    }
+    .dni {
+        background-color: cadetblue;
+        text-align: center;
+    }
+   
+</style>
+<body>
+    <table>
+        <tr>
+            <th class="nombre">Nombre:</th>
+            <td><div id="nombre"></div></td>
+        </tr>
+        <tr>
+            <th class="dni">DNI:</th>
+            <td><div id="dni"></div></td>
+        </tr>
+        <tr class="fecha">
+            <th>Fecha:</th>
+            <td><div id="fecha_actual"></div></td>
+        </tr>
+        <tr>
+            <th class="encabezado">Producto 1</th>
+            <td class="precios"><div id="p1"></div></td>
+        </tr>
+        <tr>
+            <th class="encabezado">Producto 2</th>
+            <td class="precios"><div id="p2"></div></td>
+        </tr>
+        <tr>
+            <th class="encabezado">Producto 3</th>
+            <td class="precios"><div id="p3"></div></td>
+        </tr>
+        <tr>
+            <th class="encabezado">Producto 4</th>
+            <td class="precios"><div id="p4"></div></td>
+        </tr>
+        <tr>
+            <th class="encabezado">Producto 5</th>
+            <td class="precios"><div id="p5"></div></td>
+        </tr>
+        <tr>
+            <th class="encabezado">Producto 6</th>
+            <td class="precios"><div id="p6"></div></td>
+        </tr>
+        <tr>
+            <th class="encabezado">Total</th>
+            <td class="precios"><div id="total"></div></td>
+        </tr>
+    </table>
+    <br>
+    <div class="descuento" id="descuento"></div>
+    <div class="carrito" id="carrito"></div>
+    <script src="precios3.js"></script>
+</body>
+</html>

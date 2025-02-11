@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Precios</title>
+</head>
+<style>
+    table{
+        border: 1px solid black;
+        
+    }
+    td
+    {
+        border: 1px solid black;
+        padding: 20px;
+    }
+    th{
+        border: 1px solid black;
+        padding: 20px;
+    }
+    .encabezado{
+        background-color: cadetblue;
+        text-align: center;
+        
+    }
+    .fecha{
+        background-color: cadetblue;
+    }
+    .precios{
+        background-color: cadetblue;
+    }
+</style>
+<body>
+    <table>
+        <tr>
+            <th class="encabezado">Producto 1</th>
+            <td class="precios"><div id="p1"></div></td>
+        </tr>
+        <tr>
+            <th class="encabezado">Producto 2</th>
+            <td class="precios"><div id="p2"></div></td>
+        </tr>
+        <tr>
+            <th class="encabezado" >Producto 3</th>
+            <td class="precios"><div id="p3"></div></td>
+        </tr>
+        <tr>
+            <th class="encabezado" >Total</th>
+            <td class="precios"><div id="total"></div></td>
+        </tr>
+    </table>
+    <div id="p1"></div>
+    <div id="p2"></div>
+    <div id="p3"></div>
+    <div id="total"></div>
+    <script src="precios.js"></script>
+</body>
+</html>

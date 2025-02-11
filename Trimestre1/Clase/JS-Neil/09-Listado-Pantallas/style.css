@@ -1,0 +1,24 @@
+
+body {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 60px;
+}
+
+table {
+  width: 60%;
+  border-collapse: collapse;
+  border: 1px black solid;
+}
+
+th,
+td {
+  padding: 20px;
+  border: 1px black solid;
+}
+
+th {
+  text-align: start;
+}
