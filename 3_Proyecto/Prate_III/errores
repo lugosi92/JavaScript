@@ -1,0 +1,17 @@
+Parece que tu código está bastante completo, pero noto algunos puntos que podrías revisar o mejorar para asegurar que todo funcione correctamente:
+
+Errores en la función modifLibro:
+
+Estás utilizando un atributo sin declarar dentro del bucle: atributo = prompt("Introduzca el atributo a modificar");. Es importante definir correctamente las variables para evitar errores.
+La función puede generar un error si no se valida si el atributo ingresado es válido para el objeto libro. Deberías asegurarte de que el atributo existe antes de modificarlo.
+Error tipográfico en modifLector: En la validación del correo electrónico en la función altaLector, tienes un errorV = true; 800 que parece un error tipográfico. Deberías eliminar ese 800 para que la lógica funcione correctamente.
+
+Faltan verificaciones en la función bajaLector: Aunque ya verificas que el numSocio existe, sería útil agregar una validación para asegurarte de que el lector no esté ya dado de baja antes de proceder.
+
+El manejo de préstamos no verifica que haya suficientes ejemplares: En las funciones prestamoLibro y devolucionLibro, estás manipulando la propiedad ejemplares de los libros, pero no haces suficiente verificación para asegurarte de que el número de ejemplares nunca sea negativo o se permita hacer un préstamo sin stock disponible.
+
+El uso de FileReader: La función leerArchivo es adecuada para leer los archivos, pero debes tener en cuenta que si el archivo CSV contiene una gran cantidad de datos, podrías necesitar optimizar el manejo de esos archivos (por ejemplo, validando que el formato del CSV sea el esperado antes de procesarlo).
+
+Mejoras en la gestión de errores: Aunque ya tienes ciertas validaciones, podrías añadir más mensajes de error para casos específicos, como cuando el archivo CSV no se encuentra en el formato adecuado, o si un lector intenta realizar una acción sin estar registrado.
+
+En general, tu enfoque de organizar las funciones y los objetos parece estar bien estructurado. ¿Te gustaría que profundice más en alguno de los puntos o que te ayude a resolver algún problema específico que hayas encontrado al ejecutar el código?
