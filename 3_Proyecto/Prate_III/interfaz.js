@@ -10,6 +10,7 @@ const manga = new Clasificacion(7, 4, 6);
 const arrayLibros = [];
 const arrayLectores = [];
 const arrayPrestamos = [];
+let arrayPrestamosVivos = [];
 
 // FUNCIÓN PARA LEER ARCHIVOS CSV
 async function leerArchivo(file) {
@@ -64,8 +65,9 @@ function Clasificacion(pasillo, estanteria, estante) {
     this.estante = estante;
 }
 
-
-//----------------------------------------------------BOTONES-----------------------------------------------------------------
+//----------------------------------------------------------------------------------------------------------------------------------------------------------------------
+//------------------------------------------------------------------------------BOTONES------------------------------------------------------------------------------
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 // ------------------------------------------------IMPORTAR-------------------------------------------------------------
 document.getElementById('importar-boton').addEventListener('click', async () => {
@@ -149,8 +151,10 @@ function mostrarLectores() {
 
 
 
-// ----------------------ALTA LECTOR----------------------------
+// ------------------------------------------------ALTA LECTOR-------------------------------------------------------------
   // Añadir el evento de click al botón
+
+  //0862	9781234567890	Juan Pérez	El Gran Libro!	Editorial XYZ	4
   document.getElementById('alta-libro-boton').addEventListener('click', () => {
     const isbn = document.getElementById('alta-libro-isbn').value;
     const autor = document.getElementById('alta-libro-autor').value;
@@ -158,7 +162,7 @@ function mostrarLectores() {
     const editorial = document.getElementById('alta-libro-editorial').value;
     const ejemplares = document.getElementById('alta-libro-ejemplares').value;
 
-    // Llamar a la función altaLibro y pasarle los valores
+
     altaLibro(isbn, autor, titulo, editorial, ejemplares);
 });
 
@@ -173,51 +177,45 @@ function mostrarLectores() {
 document.getElementById("vista-libros-boton").addEventListener("click", function() {
     actualizarVista(); // Llama a la función para actualizar la tabla
 });
+
+
 function actualizarVista() {
-    // Obtener el tbody de la tabla
-    let tablaCuerpo = document.querySelector("#vista-libros-tabla tbody");
+    const tabla = document.getElementById('vista-libros-tabla').querySelector('tbody');
+    tabla.innerHTML = ""; // Limpiar tabla
 
-    // Limpiar el contenido actual de la tabla
-    tablaCuerpo.innerHTML = "";
-
-    // Recorrer el array de libros y agregar cada libro a la tabla
     arrayLibros.forEach(libro => {
-        // Crear una fila para el libro
-        let fila = document.createElement("tr");
-
-        // Crear las celdas con la información del libro
-        let celdaCodLibro = document.createElement("td");
-        celdaCodLibro.textContent = libro.codLibro;
-
-        let celdaIsbn = document.createElement("td");
-        celdaIsbn.textContent = libro.isbn;
-
-        let celdaAutor = document.createElement("td");
-        celdaAutor.textContent = libro.autor;
-
-        let celdaTitulo = document.createElement("td");
-        celdaTitulo.textContent = libro.titulo;
-
-        let celdaEditorial = document.createElement("td");
-        celdaEditorial.textContent = libro.editorial;
-
-        let celdaEjemplares = document.createElement("td");
-        celdaEjemplares.textContent = libro.ejemplares;
-
-        // Agregar las celdas a la fila
-        fila.appendChild(celdaCodLibro);
-        fila.appendChild(celdaIsbn);
-        fila.appendChild(celdaAutor);
-        fila.appendChild(celdaTitulo);
-        fila.appendChild(celdaEditorial);
-        fila.appendChild(celdaEjemplares);
-
-        // Agregar la fila a la tabla
-        tablaCuerpo.appendChild(fila);
+        const fila = document.createElement('tr');
+        fila.innerHTML = `
+            <td>${libro.codLibro}</td>
+            <td>${libro.isbn}</td>
+            <td>${libro.autor}</td>
+            <td>${libro.titulo}</td>
+            <td>${libro.editorial}</td>
+            <td>${libro.ejemplares}</td>
+        `;
+        tabla.appendChild(fila);
     });
 }
 
 
+// ------------------------------------------------PRESTAMO-------------------------------------------------------------
+
+document.getElementById('prestamo-boton').addEventListener( "click", function() {
+    const numSocio = document.getElementById('devolucion-prestamo-socio').value;
+    const codLibro = document.getElementById('devolucion-prestamo-libro').value;
+
+    solicitudPrestamo(numSocio, codLibro);
+
+});
+
+// ------------------------------------------------DEVOLCUION-------------------------------------------------------------
+
+document.getElementById('devolucion-boton').addEventListener( "click", function(){
+    const numSocio = document.getElementById('devolucion-prestamo-socio').value;
+    const codLibro = document.getElementById('devolucion-prestamo-libro').value;
+
+    devolucionPrestamos(numSocio, codLibro)
+});
 
 
 
@@ -234,171 +232,26 @@ function actualizarVista() {
 
 
 
+//----------------------------------------------------------------------------------------------------------------------------------------------------------------------
+//------------------------------------------------------------------------------FUNCIONES------------------------------------------------------------------------------
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 
-
-
-
-
-/*-------------------------------------------------------FUNCIONES LECTORES-------------------------------------------------*/
-
-function altaLector() {
-
-    //Validaciones de variables
-    let regexSocio = /^8[0-9]{2}$/;
-    let nombreApellido = /^[a-zA-ZáéíóúÁÉÍÓÚñÑ-]+(\s[a-zA-ZáéíóúÁÉÍÓÚñÑ-]+)?$/;
-    let regexTelefono = /^[6789]\d{8}$/;
-    let regexEmail = /^[a-zA-Z0-9]+@[a-zA-Z]+\.(es|com|net|fr|it|pt|org)$/;
-
-    //Solicitud de valores
-    let numSocio = prompt("Introduce el NºSOCIO entre 800-899");
-    let nombre = prompt("Introduce nombre");
-    let apellido = prompt("Introduce apellido");
-    let telefono = prompt("Introduce NºTelefono");
-    let email = prompt("Introduce email");
-
-    //Activar si existe valor nulo o no cumple con la logica de negocio
-    let errorF = false;
-    let errorV = false;
-
-    //Validar valores vacios
-    if (numSocio == null || nombre == null || apellido == null || telefono == null || email == null) {
-        errorF = true;
-        //Validar logica de negocio
-    } else if (!regexSocio.test(numSocio) || !nombreApellido.test(nombre) || !nombreApellido.test(apellido) ||
-        !regexTelefono.test(telefono) || !regexEmail.test(email)) {
-        errorV = true; 
-    }
-
-    //Imprimri errores si viola la logica de negocio
-    if (errorF == true) {
-        alert("F --> No pueden existir datos vacios")
-    } else if (errorV == true) {
-        alert("V --> El formato de algun dato es incorrecto")
-    }
-
-    //Si no existe errores instanciar objeto en el listado de Lectores
-    if (errorF == false && errorV == false) {
-        const lector = new Lectores(numSocio, nombre, apellido, telefono, email, false, null);
-        arrayLectores.push(lector);
-    }
-    console.log(arrayLectores);
-
-}
-
-function bajaLector() {
-
-    let numSocio = prompt("Introduzca el NºSOCIO a dar de baja");
-
-    //Crear fecha y aplicar formato
-    let fecha = new Date();
-    let fechaEspañol = fecha.toLocaleDateString('es-ES');
-
-    //Si no encuentra el NºSOCIO salta el mensaje de error
-    let encontrado = false;
-
-    arrayLectores.forEach(lector => {
-        //Comprobar que existe
-        if (lector.numSocio == numSocio) {
-            //Confirmar baja
-            lector.bajaLector = true;
-            lector.fechaBajaLibro = fechaEspañol;
-            //Imprimri datos actualizados por consola
-            console.log("DATOS ACTUALIZADOS " + lector.nombre + " HA SIDO DADO DE BAJA");
-            console.log(arrayLectores);
-            //Error no se cumplira
-            encontrado = true;
-        }
-    });
-    if (!encontrado) {
-        console.log("E --> No se ha encontrado ningun socio con ese numero")
-    }
-
-
-}
-
-function modifLector() {
-
-    let numSocio = prompt("Introduzca el NºSOCIO a modficiar");
-
-    //Si no encuentra el NºSOCIO salta el mensaje de error
-    let encontrado = false;
-
-    arrayLectores.forEach(lector => {
-        if (lector.numSocio == numSocio) {
-            //PEDIR VALORES Y MODIFICAR
-            atributo = prompt("Introduzca el atributo a modificar");
-            nuevoValor = prompt("Introduzca el nuevo valor");
-            lector[atributo] = nuevoValor;
-            //IMPRIMIR LISTA
-            console.log("LISTA ACTUALIZADA");
-            console.log(arrayLectores);
-            //ERROR NO SALTA
-            encontrado = true;
-        }
-    });
-    if (!encontrado) {
-        console.log("E --> No se ha encontrado ningun socio con ese numero")
-    }
-
-}
-
-function verificarEmail(email) {
-
-    let regexEmail = /^[a-zA-Z0-9]+@[a-zA-Z]+\.(es|com|net|fr|it|pt|org)$/;
-    return regexEmail.test(email);
-}
-
-function verificarTelefono(telefono) {
-
-    let regexTelefono = /^[6789]\d{8}$/;
-    return regexTelefono.test(telefono);
-}
-
-function comprobarEmails() {
-
-    //Listado de email no correctos
-    const emailsNO = [];
-
-    arrayLectores.forEach(lector => {
-        if (verificarEmail(lector.email) == false) {
-            emailsNO.push(lector);
-        }
-    });
-    console.log("Lista de lectores con correos no validos");
-    console.log(emailsNO);
-}
-
-function comprobarTelefonos() {
-
-    //Listado de telefonos no correctos
-    const telefonosNO = [];
-
-    arrayLectores.forEach(lector => {
-        if (verificarTelefono(lector.telefono) == false) {
-            telefonosNO.push(lector);
-        }
-    });
-    console.log("Lista de lectores con telefonos no validos");
-    console.log(telefonosNO);
-}
-
-
-
-/*-------------------------------------------------------FUNCIONES LIBRO-------------------------------------------------*/
+/*-------------------------------------------------------BOTON (ALTA LIBRO) - Funciones -------------------------------------------------*/
 
 function altaLibro(isbn, autor, titulo, editorial, ejemplares) {
+
     // Generar código de libro
     let codLibro = Math.floor(Math.random() * 900) + 100; 
     codLibro = `0${codLibro}`; // Añade un 0 al principio
   
     // Validaciones de variables
-    let regexCod = /^0[0-9]{3}$/;
+    // let regexCod = /^0[0-9]{3}$/;
     let regexISBN = /^\d{13}$/; // Cambiado para validar un ISBN de 13 dígitos numéricos
     let regexAutor = /^[a-zA-ZáéíóúÁÉÍÓÚñÑ-]+(\s[a-zA-ZáéíóúÁÉÍÓÚñÑ-]+)?$/;
     let regexTitulo = /^[a-zA-ZáéíóúÁÉÍÓÚñÑ0-9-_*¡!@#$%&/()¿?€.,;:]+(\s[a-zA-ZáéíóúÁÉÍÓÚñÑ0-9-_*¡!@#$%&/()¿?€.,;:]+)*$/;
     let regexEditorial = /^[a-zA-ZáéíóúÁÉÍÓÚñÑ-]+(\s[a-zA-ZáéíóúÁÉÍÓÚñÑ-]+)?$/;
-    let regexEjemplares = /^[1-9][0-9]*$/;  // Asegura que el número sea mayor que 0
+    let regexEjemplares = /^[1-9]*$/;  // Asegura que el número sea mayor que 0
 
 
     // Validaciones de campos
@@ -408,25 +261,33 @@ function altaLibro(isbn, autor, titulo, editorial, ejemplares) {
     // Validar si los campos están vacíos
     if (!isbn || !autor || !titulo || !editorial || !ejemplares) {
         errorF = true;
+        alert("F --> No pueden existir datos vacíos");
     }
 
     // Validar formato de los datos
-    if (!regexCod.test(codLibro) || !regexISBN.test(isbn) || !regexAutor.test(autor) ||
-        !regexTitulo.test(titulo) || !regexEditorial.test(editorial) || !regexEjemplares.test(ejemplares)) {
+    if (!regexAutor.test(autor)) {
         errorV = true;
+        alert("El autor solo puede contener letras y espacios.");
+    } 
+    if (!regexTitulo.test(titulo)) {
+        errorV = true;
+        alert("El título solo puede contener letras, números y caracteres especiales válidos.");
+    } 
+    if (!regexEditorial.test(editorial)) {
+        errorV = true;
+        alert("La editorial solo puede contener letras y espacios.");
+    } 
+    if (!regexEjemplares.test(ejemplares)) {
+        errorV = true;
+        alert("Los ejemplares deben ser un número entre 1 y 9.");
     }
-
-    // Imprimir errores si viola la lógica de negocio
-    if (errorF) {
-        alert("F --> No pueden existir datos vacíos");
-    } else if (errorV) {
-        alert("V --> El formato de algún dato es incorrecto");
-    }
+        
+    
 
     // Si no existen errores, crear el libro y agregarlo al array
     if (!errorF && !errorV) {
         // Crear el objeto de libro
-        const libro = new Lectores(codLibro, isbn, autor, titulo, editorial, ejemplares, false, null);
+        const libro = new Libros(codLibro, isbn, autor, titulo, editorial, ejemplares, false, null);
 
         // Agregar el libro al array de libros
         arrayLibros.push(libro);
@@ -442,96 +303,13 @@ function altaLibro(isbn, autor, titulo, editorial, ejemplares) {
         console.log(arrayLibros);  // Muestra el array de libros
 
         // Actualizar la vista para mostrar los libros
-        actualizarVista();
+        // actualizarVista();
     }
 }
 
+/*-------------------------------------------------------BOTON (prestamo) - Funciones-------------------------------------------------*/
+function prestamoLibro(codLibro) {
 
-
-function bajaLector() {
-
-    let codLibro = prompt("Introduzca el codigo del libro a dar de baja");
-
-    //Crear fecha y aplicar formato
-    let fecha = new Date();
-    let fechaEspañol = fecha.toLocaleDateString('es-ES');
-
-    //Si no encuentra el NºSOCIO salta el mensaje de error
-    let encontrado = false;
-
-    arrayLibros.forEach(libro => {
-        //Comprobar que existe
-        if (libro.codLibro == codLibro) {
-            //Confirmar baja
-            libro.bajaLibro = true;
-            libro.fechaBajaLibro = fechaEspañol;
-            //Imprimri datos actualizados por consola
-            console.log("DATOS ACTUALIZADOS " + libro.titulo + " HA SIDO DADO DE BAJA");
-            console.log(arrayLibros);
-            //Error no se cumplira
-            encontrado = true;
-        }
-    });
-    if (!encontrado) {
-        console.log("E --> No se ha encontrado ningun codigo con ese numero")
-    }
-
-
-}
-
-/*
-*
-*
-*
-*FALTA VALIDAR ATRIBUTO EN MODIFLIBRO
-*
-*
-*
-*
-*/
-
-function modifLibro() {
-
-    let codLibro = prompt("Introduzca el codigo del libro a modficiar");
-
-    //Si no encuentra el codigo salta el mensaje de error
-    let encontrado = false;
-
-    arrayLibros.forEach(libro => {
-        if (libro.codLibro == codLibro) {
-            //PEDIR VALORES Y MODIFICAR
-            atributo = prompt("Introduzca el atributo a modificar");
-            nuevoValor = prompt("Introduzca el nuevo valor");
-            libro[atributo] = nuevoValor;
-            //IMPRIMIR LISTA
-            console.log("LISTA ACTUALIZADA");
-            console.log(arrayLibros);
-            //ERROR NO SALTA
-            encontrado = true;
-        }
-    });
-    if (!encontrado) {
-        console.log("E --> No se ha encontrado ningun codigo con ese numero")
-    }
-
-}
-
-function hayLibro() {
-
-    let codLibroISBN = prompt("Introduce el ISBN o el codigo del libro a buscar");
-    let existe = false;
-
-    arrayLibros.forEach(libro => {
-        if ((libro.codLibro == codLibroISBN || libro.isbn == codLibroISBN) && libro.bajaLibro == false) {
-            existe = true;
-        }
-    });
-    return existe;
-}
-
-function prestamoLibro() {
-
-    let codLibro = prompt("Introduce el codigo del libro");
     let prestado = false;
 
     arrayLibros.forEach(libros => {
@@ -547,98 +325,13 @@ function prestamoLibro() {
     return prestado;
 }
 
-function devolucionLibro() {
-    let codLibro = prompt("Introduce el codigo del libro");
-    let prestado = false;
+function solicitudPrestamo(numSocio, codLibro) {
 
-    arrayLibros.forEach(libros => {
-        if (libros.codLibro == codLibro) {
-            libros.ejemplares = parseInt(libros.ejemplares);
-            console.log("Lista actualizada PRESTADO");
-            libros.ejemplares += 1;
-            prestado = true;
-            console.log(arrayLibros);
-        }
-    });
-
-    return prestado;
-}
-
-function dondeLibro() {
-    let codLibro = prompt("Introduce el codigo del libro");
-    let encontrado = false;
-
-
-    arrayLibros.forEach(libro => {
-
-        if (libro.codLibro == codLibro) {
-            console.log("Pasillo " + libro.pasillo +
-                ", Estantería " + libro.estanteria +
-                ", Estante " + libro.estante);
-            encontrado = true;
-        }
-    });
-
-    if (encontrado == false) {
-        console.log("No se encontro el libro");
-    }
-}
-
-/*-------------------------------------------------------FUNCIONES PRESTAMO-------------------------------------------------*/
-
-function listadoTotalPrestamos() {
-
-    let existe = false;
-    arrayPrestamos.forEach(prestamo => {
-
-        if (prestamo.fechaDevolucion == null) {
-            console.log("PRESTAMOS VIVOS")
-            console.log(
-                "El NºPrestamo: " + prestamo.numPrestamo + "\n" +
-                "El NºSocio: " + prestamo.numSocio + "\n" +
-                "El CODIGO DEL LIBRO: " + prestamo.codLibro + "\n" +
-                "Fecha prestamo: " + prestamo.fechaPrestamo + "\n");
-            existe = true;
-        } else {
-            console.log("PRESTAMOS DEVUELTOS");
-            console.log(
-                "El NºPrestamo: " + prestamo.numPrestamo + "\n" +
-                "El NºSocio: " + prestamo.numSocio + "\n" +
-                "El CODIGO DEL LIBRO: " + prestamo.codLibro + "\n" +
-                "Fecha prestamo: " + prestamo.fechaPrestamo + "\n" +
-                "Fecha devolucion: " + prestamo.fechaDevolucion + "\n");
-            existe = true;
-        }
-    });
-
-    if (!existe) {
-        console.log("No existen prestamos");
-    }
-
-
-}
-
-function ListadoPrestamosVivos() {
-    if (prestamo.fechaDevolucion == null) {
-        console.log("PRESTAMOS VIVOS")
-        console.log(
-            "El NºPrestamo: " + prestamo.numPrestamo + "\n" +
-            "El NºSocio: " + prestamo.numSocio + "\n" +
-            "El CODIGO DEL LIBRO: " + prestamo.codLibro + "\n" +
-            "Fecha prestamo: " + prestamo.fechaPrestamo + "\n");
-    } else {
-        console.log("No existen prestamos")
-    }
-}
-
-function solicitudPrestamo() {
-
-    let numSocio = prompt("Introduce numSocio");
-    let codLibro = prompt("Introduce el codigo del libro");
     //Crear fecha y aplicar formato
     let fecha = new Date();
     let fechaPrestamo = fecha.toLocaleDateString('es-ES');
-    let numPrestamo = 0;
+    let numPrestamo =  arrayPrestamos.length + 1; // Crear un número único para cada préstamo basado en el tamaño del array
+
 
     let existe = false;
 
@@ -656,11 +349,12 @@ function solicitudPrestamo() {
         }
     });
 
-    if (existe = true) {
-        if (prestamoLibro() == true) {
+    if (existe == true) {
+        if (prestamoLibro(codLibro) == true) {
             numPrestamo++;
             const prestamo = new Prestamos(numPrestamo, numSocio, codLibro, fechaPrestamo, null);
             arrayPrestamos.push(prestamo);
+            arrayPrestamosVivos.push(prestamo);
         }
     }
     console.log(arrayPrestamos);
@@ -671,10 +365,28 @@ function solicitudPrestamo() {
 
 }
 
-function devolucionPrestamos() {
+/*-------------------------------------------------------BOTON (devolucion) - Funciones-------------------------------------------------*/
 
-    let numSocio = prompt("Introduce numSocio");
-    let codLibro = prompt("Introduce el código del libro");
+function devolucionLibro(codLibro) {
+   
+    let prestado = false;
+
+    arrayLibros.forEach(libros => {
+        if (libros.codLibro == codLibro) {
+            libros.ejemplares = parseInt(libros.ejemplares);
+            console.log("Lista actualizada PRESTADO");
+            libros.ejemplares += 1;
+            prestado = true;
+            console.log(arrayLibros);
+        }
+    });
+
+    return prestado;
+}
+
+function devolucionPrestamos(numSocio, codLibro) {
+
+   
     let fecha = new Date();
     let fechaDevolucion = fecha.toLocaleDateString('es-ES');
 
@@ -694,11 +406,14 @@ function devolucionPrestamos() {
     });
 
     if(existeLector && existeLibro){
-        if(devolucionLibro() == true){
+        if(devolucionLibro(codLibro) == true){
         
-            arrayPrestamos.forEach(prestamo => {
+            arrayPrestamosVivos.forEach(prestamo => {
                 if(prestamo.numSocio == numSocio && prestamo.codLibro == codLibro){
                     prestamo.fechaDevolucion = fechaDevolucion;
+                    console.log("--");
+                    atributoNum = prestamo.numPrestamo;
+                    arrayPrestamosVivos = arrayPrestamosVivos.filter(prestamoV => prestamoV.numPrestamo != atributoNum);
                 }
             });
             console.log(arrayPrestamos);
@@ -706,51 +421,3 @@ function devolucionPrestamos() {
     }
     
 }
-
-
-
-
-
- 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
