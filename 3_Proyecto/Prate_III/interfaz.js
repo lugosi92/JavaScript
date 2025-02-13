@@ -65,21 +65,31 @@ function Clasificacion(pasillo, estanteria, estante) {
     this.estante = estante;
 }
 
+
 //----------------------------------------------------------------------------------------------------------------------------------------------------------------------
 //------------------------------------------------------------------------------BOTONES------------------------------------------------------------------------------
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------------
+/*
 
+//Crear mensajes d eeror
+El mensaje error donde sea correspondiente
+El mensaje en una variable
+Creas un p y su id
+En ese p metes el mensaje
+P insertas appendchil boton importar
+
+*/
 // ------------------------------------------------IMPORTAR-------------------------------------------------------------
 document.getElementById('importar-boton').addEventListener('click', async () => {
+
     const archivoLibros = document.getElementById('importar-input-libros').files[0];
     const archivoLectores = document.getElementById('importar-input-lectores').files[0];
 
     if (!archivoLibros || !archivoLectores) {
-        console.log("Error: Selecciona ambos archivos antes de importar.");
-        return;
-    }
-
-    try {
+        textError = "Error: Selecciona ambos archivos antes de importar.";
+        console.log("---c-");
+       
+    }else {
         const contenidoLibros = await leerArchivo(archivoLibros);
         const contenidoLectores = await leerArchivo(archivoLectores);
 
@@ -106,9 +116,16 @@ document.getElementById('importar-boton').addEventListener('click', async () => 
         // Mostrar los datos en las tablas
         mostrarLibros();
         mostrarLectores();
-    } catch (error) {
-        console.log("Error al leer los archivos.");
     }
+
+
+
+    mensajeHTML = document.createElement('p');
+    mensajeHTML.id = 'importar-mensaje';
+    
+    mensajeHTML.innerHTML = textError;
+
+    document.getElementById('importar-boton').appendChild(mensajeHTML);
 });
 
 
