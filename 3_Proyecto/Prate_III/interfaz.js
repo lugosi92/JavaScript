@@ -86,8 +86,8 @@ document.getElementById('importar-boton').addEventListener('click', async () => 
     const archivoLectores = document.getElementById('importar-input-lectores').files[0];
 
     if (!archivoLibros || !archivoLectores) {
-        textError = "Error: Selecciona ambos archivos antes de importar.";
-        console.log("---c-");
+        avsioBoton= "Error: Selecciona ambos archivos antes de importar.";
+        
        
     }else {
         const contenidoLibros = await leerArchivo(archivoLibros);
@@ -101,7 +101,8 @@ document.getElementById('importar-boton').addEventListener('click', async () => 
             if (dato[0] !== "codLibro" && dato.every(d => d.trim() !== "" && d !== "undefined")) {  // Validación extra
                 let libro = new Libros(dato[0], dato[1], dato[2],
                     dato[3], dato[4], dato[5], false, null, manga);
-                arrayLibros.push(libro);
+            arrayLibros.push(libro);
+                
             }
         });
 
@@ -111,9 +112,10 @@ document.getElementById('importar-boton').addEventListener('click', async () => 
                 let lector = new Lectores(dato[0], dato[1], dato[2], dato[3], dato[4], false, null);
                 arrayLectores.push(lector);
             }
+            
         });
 
-        // Mostrar los datos en las tablas
+        avsioBoton = "Importacion exitosa";
         mostrarLibros();
         mostrarLectores();
     }
@@ -121,14 +123,16 @@ document.getElementById('importar-boton').addEventListener('click', async () => 
 
 
     mensajeHTML = document.createElement('p');
-    mensajeHTML.id = 'importar-mensaje';
+    mensajeHTML.id = 'importar-mensajeAvsioBoton';
     
-    mensajeHTML.innerHTML = textError;
-
+    mensajeHTML.innerHTML = avsioBoton;
+    mensajeHTML.style.color="red";
     document.getElementById('importar-boton').appendChild(mensajeHTML);
+
+    setTimeout(() => {
+        mensajeHTML.remove(); // Elimina el mensaje del DOM
+    }, 3000);
 });
-
-
 
 
 // FUNCIÓN PARA MOSTRAR LIBROS EN LA TABLA
@@ -151,24 +155,41 @@ function mostrarLibros() {
 
 // FUNCIÓN PARA MOSTRAR LECTORES EN LA TABLA
 function mostrarLectores() {
-    let tabla = document.getElementById("comprobar-lectores-tabla").getElementsByTagName('tbody')[0];
-    tabla.innerHTML = ""; // Limpia la tabla antes de actualizarla
-
+    const tbody = document.querySelector("#comprobar-lectores-tabla tbody");
+    tbody.innerHTML = ""; // Limpiamos la tabla antes de actualizarla
+    
     arrayLectores.forEach(lector => {
-        let fila = tabla.insertRow();
-        fila.innerHTML = `
-            <td>${lector.numSocio}</td>
-            <td>${lector.nombre}</td>
-            <td>${lector.apellido}</td>
-            <td>${lector.telefono}</td>
-            <td>${lector.email}</td>
-        `;
+        const tr = document.createElement("tr");
+
+        const tdSocio = document.createElement("td");
+        tdSocio.textContent = lector.socio;
+        tr.appendChild(tdSocio);
+
+        const tdNombre = document.createElement("td");
+        tdNombre.textContent = lector.nombre;
+        tr.appendChild(tdNombre);
+
+        const tdApellido = document.createElement("td");
+        tdApellido.textContent = lector.apellido;
+        tr.appendChild(tdApellido);
+
+        const tdTelefono = document.createElement("td");
+        tdTelefono.textContent = lector.telefono;
+        tdTelefono.style.backgroundColor = validarTelefono(lector.telefono) ? "#C398EB" : "#EA9E90";
+        tr.appendChild(tdTelefono);
+
+        const tdEmail = document.createElement("td");
+        tdEmail.textContent = lector.email;
+        tdEmail.style.backgroundColor = validarEmail(lector.email) ? "#C398EB" : "#EA9E90";
+        tr.appendChild(tdEmail);
+
+        tbody.appendChild(tr);
     });
 }
 
 
 
-// ------------------------------------------------ALTA LECTOR-------------------------------------------------------------
+// ------------------------------------------------ALTA LEIBRO-------------------------------------------------------------
   // Añadir el evento de click al botón
 
   //0862	9781234567890	Juan Pérez	El Gran Libro!	Editorial XYZ	4
@@ -179,8 +200,28 @@ function mostrarLectores() {
     const editorial = document.getElementById('alta-libro-editorial').value;
     const ejemplares = document.getElementById('alta-libro-ejemplares').value;
 
+    
 
-    altaLibro(isbn, autor, titulo, editorial, ejemplares);
+    if (altaLibro(isbn, autor, titulo, editorial, ejemplares)) {
+        // El valor devuelto es true, entonces ejecutamos el bloque de código aquí
+       mensajeError = "El libro se ha agregado correctamente.";
+        // O cualquier otra acción que quieras realizar
+    } else {
+        // El valor devuelto es false, entonces ejecutamos este bloque
+        mensajeError = "Hubo un error al agregar el libro.";
+    }
+
+    mensajeLibro = document.createElement('p');
+    mensajeLibro.id = 'importar-mensajeError';
+    
+    mensajeLibro.innerHTML = mensajeError;
+    mensajeLibro.style.color="red";
+    document.getElementById('alta-libro-boton').appendChild(mensajeLibro);
+
+    // Hacer que el mensaje desaparezca después de 3 segundos (3000 ms)
+setTimeout(() => {
+    mensajeLibro.remove(); // Elimina el mensaje del DOM
+}, 3000);
 });
 
 
@@ -215,6 +256,7 @@ function actualizarVista() {
 }
 
 
+
 // ------------------------------------------------PRESTAMO-------------------------------------------------------------
 
 document.getElementById('prestamo-boton').addEventListener( "click", function() {
@@ -222,6 +264,27 @@ document.getElementById('prestamo-boton').addEventListener( "click", function() 
     const codLibro = document.getElementById('devolucion-prestamo-libro').value;
 
     solicitudPrestamo(numSocio, codLibro);
+
+    if (solicitudPrestamo(numSocio, codLibro)) {
+        // El valor devuelto es true, entonces ejecutamos el bloque de código aquí
+       mensajeError = "El prestamo se ha agregado correctamente.";
+        // O cualquier otra acción que quieras realizar
+    } else {
+        // El valor devuelto es false, entonces ejecutamos este bloque
+        mensajeError = "Hubo un error al agregar el libro.";
+    }
+
+    mensajePrestsmo = document.createElement('p');
+    mensajePrestsmo.id = 'importar-mensajeError';
+    
+    mensajePrestsmo.innerHTML = mensajeError;
+    mensajePrestsmo.style.color="red";
+    document.getElementById('prestamo-boton').appendChild(mensajePrestsmo);
+
+    // Hacer que el mensaje desaparezca después de 3 segundos (3000 ms)
+setTimeout(() => {
+    mensajePrestsmo.remove(); // Elimina el mensaje del DOM
+}, 3000);
 
 });
 
@@ -231,7 +294,33 @@ document.getElementById('devolucion-boton').addEventListener( "click", function(
     const numSocio = document.getElementById('devolucion-prestamo-socio').value;
     const codLibro = document.getElementById('devolucion-prestamo-libro').value;
 
-    devolucionPrestamos(numSocio, codLibro)
+    
+
+    if (devolucionPrestamos(numSocio, codLibro)) {
+        // El valor devuelto es true, entonces ejecutamos el bloque de código aquí
+       mensajeError = "El prestamo se ha agregado correctamente.";
+        // O cualquier otra acción que quieras realizar
+    } else {
+        // El valor devuelto es false, entonces ejecutamos este bloque
+        mensajeError = "Hubo un error al agregar el libro.";
+    }
+
+    mensajeDevolucion = document.createElement('p');
+    mensajeDevolucion.id = 'importar-mensajeError';
+    
+    mensajeDevolucion.innerHTML = mensajeError;
+    mensajeDevolucion.style.color="red";
+    document.getElementById('devolucion-boton').appendChild(mensajeDevolucion);
+
+    // Hacer que el mensaje desaparezca después de 3 segundos (3000 ms)
+setTimeout(() => {
+    mensajeDevolucion.remove(); // Elimina el mensaje del DOM
+}, 3000);
+
+// // AL HACER CLICK
+// mensajeHTML.addEventListener('click', () => {
+//     mensajeHTML.remove(); // Elimina el mensaje del DOM al hacer clic
+// });
 });
 
 
@@ -274,6 +363,8 @@ function altaLibro(isbn, autor, titulo, editorial, ejemplares) {
     // Validaciones de campos
     let errorF = false;
     let errorV = false;
+
+    let devolver = true;
 
     // Validar si los campos están vacíos
     if (!isbn || !autor || !titulo || !editorial || !ejemplares) {
@@ -321,6 +412,8 @@ function altaLibro(isbn, autor, titulo, editorial, ejemplares) {
 
         // Actualizar la vista para mostrar los libros
         // actualizarVista();
+
+        return devolver;
     }
 }
 
@@ -438,3 +531,19 @@ function devolucionPrestamos(numSocio, codLibro) {
     }
     
 }
+
+
+/*-------------------------------------------------------Colores Lectores - Funciones-------------------------------------------------*/
+function validarEmail(email) {
+
+    let regexEmail = /^[a-zA-Z0-9]+@[a-zA-Z]+\.(es|com|net|fr|it|pt|org)$/;
+    return regexEmail.test(email);
+}
+
+function validarTelefono(telefono) {
+
+    let regexTelefono = /^[6789]\d{8}$/;
+    return regexTelefono.test(telefono);
+}
+
+
