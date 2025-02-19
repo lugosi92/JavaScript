@@ -295,7 +295,7 @@ document.getElementById('devolucion-boton').addEventListener( "click", function(
     const codLibro = document.getElementById('devolucion-prestamo-libro').value;
 
     
-
+    let mensajeError;
     if (devolucionPrestamos(numSocio, codLibro)) {
         // El valor devuelto es true, entonces ejecutamos el bloque de código aquí
        mensajeError = "El prestamo se ha agregado correctamente.";
@@ -305,7 +305,8 @@ document.getElementById('devolucion-boton').addEventListener( "click", function(
         mensajeError = "Hubo un error al agregar el libro.";
     }
 
-    mensajeDevolucion = document.createElement('p');
+
+    const mensajeDevolucion = document.createElement('p');
     mensajeDevolucion.id = 'importar-mensajeError';
     
     mensajeDevolucion.innerHTML = mensajeError;
@@ -313,14 +314,14 @@ document.getElementById('devolucion-boton').addEventListener( "click", function(
     document.getElementById('devolucion-boton').appendChild(mensajeDevolucion);
 
     // Hacer que el mensaje desaparezca después de 3 segundos (3000 ms)
-setTimeout(() => {
-    mensajeDevolucion.remove(); // Elimina el mensaje del DOM
-}, 3000);
+// setTimeout(() => {
+//     mensajeDevolucion.remove(); // Elimina el mensaje del DOM
+// }, 3000);
 
-// // AL HACER CLICK
-// mensajeHTML.addEventListener('click', () => {
-//     mensajeHTML.remove(); // Elimina el mensaje del DOM al hacer clic
-// });
+// AL HACER CLICK
+mensajeDevolucion.addEventListener('click', () => {
+    mensajeDevolucion.remove(); // Elimina el mensaje del DOM al hacer clic
+});
 });
 
 
@@ -552,7 +553,7 @@ function validarTelefono(telefono) {
 
 
 //------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-//------------------------------------------------------------------------------FUNCIONES no usadas a implementar en la interfaz------------------------------------------------------------------------------
+//------------------------------------------------------------------------------FUNCIONES no usadas------------------------------------------------------------------------------
 //------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 
