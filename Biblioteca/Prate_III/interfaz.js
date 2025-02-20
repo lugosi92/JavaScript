@@ -182,7 +182,7 @@ document.getElementById("vista-libros-boton").addEventListener("click", function
 });
 
 
-function actualizarVistaLectores() {
+function actualizarVistaLibros() {
     const tabla = document.getElementById('vista-libros-tabla').querySelector('tbody');
     tabla.innerHTML = ""; // Limpiar tabla
 
@@ -591,6 +591,8 @@ function validarTelefono(telefono) {
     let regexTelefono = /^[6789]\d{8}$/;
     return regexTelefono.test(telefono);
 }
+
+
 
 
 
