@@ -69,24 +69,25 @@ function Clasificacion(pasillo, estanteria, estante) {
 //----------------------------------------------------------------------------------------------------------------------------------------------------------------------
 //------------------------------------------------------------------------------BOTONES------------------------------------------------------------------------------
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*
 
-//Crear mensajes d eeror
-El mensaje error donde sea correspondiente
-El mensaje en una variable
-Creas un p y su id
-En ese p metes el mensaje
-P insertas appendchil boton importar
 
-*/
 // ------------------------------------------------IMPORTAR-------------------------------------------------------------
 document.getElementById('importar-boton').addEventListener('click', async () => {
+
+     // Eliminar mensaje previo si existe
+     const mensajePrevio = document.getElementById('importar-mensajeError');
+     if (mensajePrevio) mensajePrevio.remove();
+ 
+     // Declarar mensaje
+     let mensaje = "";
 
     const archivoLibros = document.getElementById('importar-input-libros').files[0];
     const archivoLectores = document.getElementById('importar-input-lectores').files[0];
 
+
+
     if (!archivoLibros || !archivoLectores) {
-        avsioBoton= "Error: Selecciona ambos archivos antes de importar.";
+        mensaje= "Error: Selecciona ambos archivos antes de importar.";
         
        
     }else {
@@ -115,7 +116,7 @@ document.getElementById('importar-boton').addEventListener('click', async () => 
             
         });
 
-        avsioBoton = "Importacion exitosa";
+        mensaje = "Importacion exitosa";
         mostrarLibros();
         mostrarLectores();
     }
@@ -123,15 +124,12 @@ document.getElementById('importar-boton').addEventListener('click', async () => 
 
 
     mensajeHTML = document.createElement('p');
-    mensajeHTML.id = 'importar-mensajeAvsioBoton';
+    mensajeHTML.id = 'importar-mensajeError';
     
-    mensajeHTML.innerHTML = avsioBoton;
+    mensajeHTML.innerHTML = mensaje;
     mensajeHTML.style.color="red";
     document.getElementById('importar-boton').appendChild(mensajeHTML);
 
-    setTimeout(() => {
-        mensajeHTML.remove(); // Elimina el mensaje del DOM
-    }, 3000);
 });
 
 
@@ -159,41 +157,135 @@ function mostrarLectores() {
     tbody.innerHTML = ""; // Limpiamos la tabla antes de actualizarla
     
     arrayLectores.forEach(lector => {
-        const tr = document.createElement("tr");
-
-        const tdSocio = document.createElement("td");
-        tdSocio.textContent = lector.socio;
-        tr.appendChild(tdSocio);
-
-        const tdNombre = document.createElement("td");
-        tdNombre.textContent = lector.nombre;
-        tr.appendChild(tdNombre);
-
-        const tdApellido = document.createElement("td");
-        tdApellido.textContent = lector.apellido;
-        tr.appendChild(tdApellido);
-
-        const tdTelefono = document.createElement("td");
-        tdTelefono.textContent = lector.telefono;
-        tdTelefono.style.backgroundColor = validarTelefono(lector.telefono) ? "#C398EB" : "#EA9E90";
-        tr.appendChild(tdTelefono);
-
-        const tdEmail = document.createElement("td");
-        tdEmail.textContent = lector.email;
-        tdEmail.style.backgroundColor = validarEmail(lector.email) ? "#C398EB" : "#EA9E90";
-        tr.appendChild(tdEmail);
-
-        tbody.appendChild(tr);
+        let fila = tbody.insertRow();
+        fila.innerHTML = `
+            <td>${lector.numSocio}</td>
+            <td>${lector.nombre}</td>
+            <td>${lector.apellido}</td>
+            <td>${lector.telefono}</td>
+            <td>${lector.email}</td>
+            <td>${lector.bajaLector}</td>
+        `;
     });
 }
 
 
+// ------------------------------------------------ACTUALIZAR VISTA LIBROS-------------------------------------------------------------
+// Función para actualizar la vista de libros en la tabla
 
+
+// Evento para actualizar la vista cuando se haga clic en el botón
+document.getElementById("vista-libros-boton").addEventListener("click", function() {
+     
+    actualizarVistaLibros(); // Llama a la función para actualizar la tabla
+
+});
+
+
+function actualizarVistaLectores() {
+    const tabla = document.getElementById('vista-libros-tabla').querySelector('tbody');
+    tabla.innerHTML = ""; // Limpiar tabla
+
+    arrayLibros.forEach((libro, index) => {
+        const fila = document.createElement('tr');
+
+        // Establecer el fondo alterno de las filas (pares e impares)
+        fila.style.backgroundColor = index % 2 === 0 ? '#C398EB' : '#D8A4EB';
+
+        fila.innerHTML = `
+            <td>${libro.codLibro}</td>
+            <td>${libro.isbn}</td>
+            <td>${libro.autor}</td>
+            <td>${libro.titulo}</td>
+            <td>${libro.editorial}</td>
+            <td>${libro.ejemplares}</td>
+        `;
+
+        // Aplicar los estilos a las celdas de la fila
+        const celdas = fila.querySelectorAll('td');
+        celdas.forEach(celda => {
+            celda.style.outline = '1px solid #1B1B1B'; // Outline para cada celda
+            celda.style.color = '#1B1B1B'; // Color del texto
+            celda.style.padding = '10px'; // Padding de las celdas
+            celda.style.textAlign = 'left'; // Alineación del texto
+        });
+
+        tabla.appendChild(fila);
+    });
+
+    // Aplicar estilo al encabezado
+    const encabezados = document.querySelectorAll('#vista-libros-tabla th');
+    encabezados.forEach(encabezado => {
+        encabezado.style.backgroundColor = '#BB61F0'; // Fondo del encabezado
+        encabezado.style.color = 'white'; // Color del texto
+        encabezado.style.padding = '10px'; // Padding
+        encabezado.style.textAlign = 'left'; // Alineación del texto
+    });
+}
+
+// ------------------------------------------------ACTUALIZAR VISTA Lectores-------------------------------------------------------------
+
+document.getElementById("comprobar-lectores-boton").addEventListener("click", function() {
+    actualizarVistaLectores(); // Llama a la función para actualizar la tabla de lectores
+});
+
+function actualizarVistaLectores() {
+    const tabla = document.getElementById('comprobar-lectores-tabla').querySelector('tbody');
+    tabla.innerHTML = ""; // Limpiar tabla
+
+    arrayLectores.forEach((lector, index) => {
+        const fila = document.createElement('tr');
+        
+        // Crear las celdas para cada lector
+        fila.innerHTML = `
+            <td>${lector.socio}</td>
+            <td>${lector.nombre}</td>
+            <td>${lector.apellido}</td>
+            <td>${lector.telefono}</td>
+            <td>${lector.email}</td>
+        `;
+
+        // Aplicar estilos a las celdas
+        const celdas = fila.querySelectorAll('td');
+        celdas.forEach(celda => {
+            celda.style.outline = '1px solid #1B1B1B'; // Outline para cada celda
+            celda.style.color = '#1B1B1B'; // Color del texto
+            celda.style.padding = '10px'; // Padding de las celdas
+            celda.style.textAlign = 'left'; // Alineación del texto
+            celda.style.backgroundColor = '#C398EB'; // Fondo de las celdas
+        });
+
+        // Validar y aplicar colores para teléfono y email
+        if (!validarTelefono(lector.telefono)) {
+            fila.querySelector('td:nth-child(4)').style.backgroundColor = '#EA9E90'; // Teléfono incorrecto
+        }
+        if (!validarEmail(lector.email)) {
+            fila.querySelector('td:nth-child(5)').style.backgroundColor = '#EA9E90'; // Email incorrecto
+        }
+
+        tabla.appendChild(fila);
+    });
+
+    // Aplicar estilo al encabezado
+    const encabezados = document.querySelectorAll('#comprobar-lectores-tabla th');
+    encabezados.forEach(encabezado => {
+        encabezado.style.backgroundColor = '#BB61F0'; // Fondo del encabezado
+        encabezado.style.color = 'white'; // Color del texto
+        encabezado.style.padding = '10px'; // Padding
+        encabezado.style.textAlign = 'left'; // Alineación del texto
+    });
+}
 // ------------------------------------------------ALTA LEIBRO-------------------------------------------------------------
   // Añadir el evento de click al botón
 
   //0862	9781234567890	Juan Pérez	El Gran Libro!	Editorial XYZ	4
   document.getElementById('alta-libro-boton').addEventListener('click', () => {
+
+    // Limpiar mensajes
+    const mensaje = document.getElementById('alta-mensajeError');
+    if (mensaje) mensaje.remove();
+
+
     const isbn = document.getElementById('alta-libro-isbn').value;
     const autor = document.getElementById('alta-libro-autor').value;
     const titulo = document.getElementById('alta-libro-titulo').value;
@@ -201,7 +293,6 @@ function mostrarLectores() {
     const ejemplares = document.getElementById('alta-libro-ejemplares').value;
 
     
-
     if (altaLibro(isbn, autor, titulo, editorial, ejemplares)) {
         // El valor devuelto es true, entonces ejecutamos el bloque de código aquí
        mensajeError = "El libro se ha agregado correctamente.";
@@ -211,116 +302,71 @@ function mostrarLectores() {
         mensajeError = "Hubo un error al agregar el libro.";
     }
 
-    mensajeLibro = document.createElement('p');
-    mensajeLibro.id = 'importar-mensajeError';
-    
-    mensajeLibro.innerHTML = mensajeError;
-    mensajeLibro.style.color="red";
-    document.getElementById('alta-libro-boton').appendChild(mensajeLibro);
-
-    // Hacer que el mensaje desaparezca después de 3 segundos (3000 ms)
-setTimeout(() => {
-    mensajeLibro.remove(); // Elimina el mensaje del DOM
-}, 3000);
+      // Crear el mensaje
+      const mensajeLibro = document.createElement('p');
+      mensajeLibro.id = 'alta-mensajeError';
+      mensajeLibro.innerHTML = mensajeError;
+      mensajeLibro.style.color = "red";
+  
+      // Insertar el mensaje en un contenedor adecuado
+      document.getElementById('alta-libro-formulario').appendChild(mensajeLibro);
 });
 
 
+// ------------------------------------ PRÉSTAMO ------------------------------------
+document.getElementById('prestamo-boton').addEventListener("click", function() {
+    // Limpiar mensajes
+    const mensaje = document.getElementById('prestamo-mensajeError');
+    if (mensaje) mensaje.remove();
 
 
-// ------------------------------------------------ACTUALIZAR VISTA-------------------------------------------------------------
-// Función para actualizar la vista de libros en la tabla
-
-
-// Evento para actualizar la vista cuando se haga clic en el botón
-document.getElementById("vista-libros-boton").addEventListener("click", function() {
-    actualizarVista(); // Llama a la función para actualizar la tabla
-});
-
-
-function actualizarVista() {
-    const tabla = document.getElementById('vista-libros-tabla').querySelector('tbody');
-    tabla.innerHTML = ""; // Limpiar tabla
-
-    arrayLibros.forEach(libro => {
-        const fila = document.createElement('tr');
-        fila.innerHTML = `
-            <td>${libro.codLibro}</td>
-            <td>${libro.isbn}</td>
-            <td>${libro.autor}</td>
-            <td>${libro.titulo}</td>
-            <td>${libro.editorial}</td>
-            <td>${libro.ejemplares}</td>
-        `;
-        tabla.appendChild(fila);
-    });
-}
-
-
-
-// ------------------------------------------------PRESTAMO-------------------------------------------------------------
-
-document.getElementById('prestamo-boton').addEventListener( "click", function() {
     const numSocio = document.getElementById('devolucion-prestamo-socio').value;
     const codLibro = document.getElementById('devolucion-prestamo-libro').value;
 
-    solicitudPrestamo(numSocio, codLibro);
-
+    let mensajeError;
     if (solicitudPrestamo(numSocio, codLibro)) {
-        // El valor devuelto es true, entonces ejecutamos el bloque de código aquí
-       mensajeError = "El prestamo se ha agregado correctamente.";
-        // O cualquier otra acción que quieras realizar
+        mensajeError = "El préstamo se ha agregado correctamente.";
     } else {
-        // El valor devuelto es false, entonces ejecutamos este bloque
-        mensajeError = "Hubo un error al agregar el libro.";
+        mensajeError = "Hubo un error al agregar el préstamo.";
     }
 
-    mensajePrestsmo = document.createElement('p');
-    mensajePrestsmo.id = 'importar-mensajeError';
-    
-    mensajePrestsmo.innerHTML = mensajeError;
-    mensajePrestsmo.style.color="red";
-    document.getElementById('prestamo-boton').appendChild(mensajePrestsmo);
+    const mensajePrestamo = document.createElement('p');
+    mensajePrestamo.id = 'prestamo-mensajeError';
+    mensajePrestamo.innerHTML = mensajeError;
+    mensajePrestamo.style.color = "red";
 
-    // Hacer que el mensaje desaparezca después de 3 segundos (3000 ms)
-setTimeout(() => {
-    mensajePrestsmo.remove(); // Elimina el mensaje del DOM
-}, 3000);
+    document.getElementById('prestamo-boton').appendChild(mensajePrestamo);
 
+
+   
 });
 
-// ------------------------------------------------DEVOLCUION-------------------------------------------------------------
+// ----------------------------------- DEVOLUCIÓN -----------------------------------
+document.getElementById('devolucion-boton').addEventListener("click", function() {
 
-document.getElementById('devolucion-boton').addEventListener( "click", function(){
+    // Limpiar mensajes
+    const mensaje = document.getElementById('devolucion-mensajeError');
+    if (mensaje) mensaje.remove();
+
+
     const numSocio = document.getElementById('devolucion-prestamo-socio').value;
     const codLibro = document.getElementById('devolucion-prestamo-libro').value;
 
-    
-
+    let mensajeError;
     if (devolucionPrestamos(numSocio, codLibro)) {
-        // El valor devuelto es true, entonces ejecutamos el bloque de código aquí
-       mensajeError = "El prestamo se ha agregado correctamente.";
-        // O cualquier otra acción que quieras realizar
+        mensajeError = "La devolución se ha realizado correctamente.";
     } else {
-        // El valor devuelto es false, entonces ejecutamos este bloque
-        mensajeError = "Hubo un error al agregar el libro.";
+        mensajeError = "Hubo un error al procesar la devolución.";
     }
 
-    mensajeDevolucion = document.createElement('p');
-    mensajeDevolucion.id = 'importar-mensajeError';
-    
+    const mensajeDevolucion = document.createElement('p');
+    mensajeDevolucion.id = 'devolucion-mensajeError';
     mensajeDevolucion.innerHTML = mensajeError;
-    mensajeDevolucion.style.color="red";
+    mensajeDevolucion.style.color = "red";
+
     document.getElementById('devolucion-boton').appendChild(mensajeDevolucion);
 
-    // Hacer que el mensaje desaparezca después de 3 segundos (3000 ms)
-setTimeout(() => {
-    mensajeDevolucion.remove(); // Elimina el mensaje del DOM
-}, 3000);
 
-// // AL HACER CLICK
-// mensajeHTML.addEventListener('click', () => {
-//     mensajeHTML.remove(); // Elimina el mensaje del DOM al hacer clic
-// });
 });
 
 
