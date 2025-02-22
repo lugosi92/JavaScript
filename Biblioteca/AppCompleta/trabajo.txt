@@ -1,0 +1,19 @@
+Implementar
+
+LIBRO
+    - Baja Libro
+    - Modifcar Libro
+    - Consultar si existe un libro
+    - Donde esta el libro añadiendo mas libros y clasificaciones
+
+LECTOR
+    - Alta Lector
+    - Baja Lector
+    - Modificar Lector
+    - Opciones, que listado imprimri de datos no validos    
+        - emails
+        - Telefono
+
+
+Prestamos  
+    - Listado tottal de prestamos

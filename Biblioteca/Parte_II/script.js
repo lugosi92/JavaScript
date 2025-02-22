@@ -370,17 +370,6 @@ function bajaLector() {
 
 }
 
-/*
-*
-*
-*
-*FALTA VALIDAR ATRIBUTO EN MODIFLIBRO
-*
-*
-*
-*
-*/
-
 function modifLibro() {
 
     let codLibro = prompt("Introduzca el codigo del libro a modficiar");
