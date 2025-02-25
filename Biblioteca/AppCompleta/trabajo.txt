@@ -1,19 +1,31 @@
-Implementar
+1 Implementar 
 
-LIBRO
-    - Baja Libro
-    - Modifcar Libro
-    - Consultar si existe un libro
-    - Donde esta el libro añadiendo mas libros y clasificaciones
+    LIBRO
+        - Baja Libro
+        - Modifcar Libro
+        - Consultar si existe un libro
+        - Donde esta el libro añadiendo mas libros y clasificaciones
 
-LECTOR
-    - Alta Lector
-    - Baja Lector
-    - Modificar Lector
-    - Opciones, que listado imprimri de datos no validos    
-        - emails
-        - Telefono
+    LECTOR
+        - Alta Lector
+        - Baja Lector
+        - Modificar Lector
+        - Opciones, que listado imprimri de datos no validos    
+            - emails
+            - Telefono
 
 
-Prestamos  
-    - Listado tottal de prestamos
+    Prestamos  
+        - Listado tottal de prestamos
+
+
+1.0 Ver que todo el codigo funciona3
+
+1.1 Esquema nuevo
+
+1.2 Compara implementacion mia con la de jesus  y añadir nuevos tipos si hay
+
+
+2 Guion del Aula ejemplo de cada una 
+
+3 Ejemplos de promesas en el codigo

@@ -5,9 +5,10 @@
 </head>
 <body>
 	<h1>Biblioteca</h1>
+
+	<!-- -----------------------IMPORTAR---------------------------------- -->
 	<section id="importar">
 		<h2>Importar</h2>
-		<!-- LIBROS -->
 		<div>
 			<label>Archivo de libros:</label>
 			<input type="file" id="importar-input-libros">
@@ -18,6 +19,8 @@
 		</div>
 		<button id="importar-boton">Importar</button>
 	</section>
+
+	<!-- -------------------------VISTA LIBRO-------------------------------- -->
 	<section id="vista-libros">
 		<h2>Vista Libros</h2>
 		<table id="vista-libros-tabla">
@@ -36,7 +39,9 @@
 		</table>
 		<button id="vista-libros-boton">Actualizar vista</button>
 	</section>
-	<section id="alta-lector">
+
+	<!-- ---------------------VISTA LECTOR------------------------------------ -->
+	<section id="vista-lectores">
 		<h2>Vista Lector</h2>
 		<table id="comprobar-lectores-tabla">
 			<thead>
@@ -53,6 +58,8 @@
 		</table>
 		<button id="comprobar-lectores-boton">Actualizar</button>
 	</section>
+
+	<!-- ---------------------ALTA LIBRO------------------------------------ -->
 	<section id="alta-libro">
 		<h2>Alta Libros</h2>
 		<div>
@@ -77,6 +84,145 @@
 		</div>
 		<button id="alta-libro-boton">Alta</button>
 	</section>
+
+		<!-- ---------------------ALTA LECTOR------------------------------------ -->
+
+	<section id="alta-lector">
+		<h2>Alta Lector</h2>
+		<div>
+			<label>Número de Socio: </label>
+			<input type="text" placeholder="Introduce el Nº de socio..." id="alta-lector-numSocio">
+		</div>
+		<div>
+			<label>Nombre: </label>
+			<input type="text" placeholder="Introduce el nombre..." id="alta-lector-nombre">
+		</div>
+		<div>
+			<label>Apellido: </label>
+			<input type="text" placeholder="Introduce el apellido..." id="alta-lector-apellido">
+		</div>
+		<div>
+			<label>Teléfono: </label>
+			<input type="text" placeholder="Introduce el teléfono..." id="alta-lector-telefono">
+		</div>
+		<div>
+			<label>Email: </label>
+			<input type="email" placeholder="Introduce el email..." id="alta-lector-email">
+		</div>
+		<button id="alta-lector-boton">Alta</button>
+		<p id="alta-lector-mensaje"></p>
+	</section>
+
+<!-- ---------------------MODIF LIBRO------------------------------------ -->
+	<section id="modificar-libro">
+		<h2>Modificar Libro</h2>
+		<div>
+			<label>Código del Libro: </label>
+			<input type="text" id="modif-libro-codLibro" placeholder="Introduce el código...">
+		</div>
+		<div>
+			<label>Atributo a modificar: </label>
+			<select id="modif-libro-atributo">
+				<option value="isbn">ISBN</option>
+				<option value="autor">Autor</option>
+				<option value="titulo">Título</option>
+				<option value="editorial">Editorial</option>
+				<option value="ejemplares">Ejemplares</option>
+			</select>
+		</div>
+		<div>
+			<label>Nuevo valor: </label>
+			<input type="text" id="modif-libro-valor" placeholder="Introduce el nuevo valor...">
+		</div>
+		<button id="modif-libro-boton">Modificar</button>
+		<p id="modif-libro-mensaje"></p>
+	</section>
+
+	
+<!-- -----------------------MODIF LECTOR---------------------------------- -->
+
+<section id="modif-lector">
+	<h2>Modificar Lector</h2>
+	<div>
+		<label>Número de Socio: </label>
+		<input type="text" id="modif-lector-socio" placeholder="Introduce el número de socio">
+	</div>
+	<div>
+		<label>Atributo a Modificar:</label>
+		<select id="modif-lector-atributo">
+			<option value="nombre">Nombre</option>
+			<option value="apellido">Apellido</option>
+			<option value="telefono">Teléfono</option>
+			<option value="email">Email</option>
+		</select>
+	</div>
+	<div>
+		<label>Nuevo Valor: </label>
+		<input type="text" id="modif-lector-valor" placeholder="Introduce el nuevo valor">
+	</div>
+	<button id="modif-lector-boton">Modificar</button>
+	<p id="modif-lector-mensaje"></p>
+</section>
+
+<!-- -----------------------BAJA LIBRO---------------------------------- -->
+<section id="baja-libro">
+	<h2>Baja de Libro</h2>
+	<div>
+		<label>Código del Libro: </label>
+		<input type="text" id="baja-libro-codigo" placeholder="Introduce el código...">
+	</div>
+	<button id="baja-libro-boton">Dar de Baja</button>
+	<p id="baja-libro-mensaje"></p>
+</section>
+<!-- -----------------------BAJA LECTOR---------------------------------- -->
+<section id="baja-lector">
+	<h2>Baja de Lector</h2>
+	<div>
+		<label>Nº de Socio: </label>
+		<input type="text" id="baja-lector-numSocio" placeholder="Introduce el nº de socio...">
+	</div>
+	<button id="baja-lector-boton">Dar de Baja</button>
+	<p id="baja-lector-mensaje"></p>
+</section>
+
+
+<!-- -----------------------BUSCA LIBRO---------------------------------- -->
+
+<section id="buscar-libro">
+	<h2>Buscar Libro</h2>
+	<div>
+		<label>Buscar por:</label>
+		<select id="buscar-libro-atributo">
+			<option value="isbn">ISBN</option>
+			<option value="codLibro">Código de Libro</option>
+		</select>
+	</div>
+	<div>
+		<label>Valor: </label>
+		<input type="text" id="buscar-libro-valor" placeholder="Introduce ISBN o Código">
+	</div>
+	<button id="buscar-libro-boton">Buscar</button>
+	<p id="buscar-libro-mensaje"></p>
+</section>
+<!-- -----------------------LOCALIZAR LIBRO---------------------------------- -->
+<section id="localizar-libro">
+	<h2>Localizar Libro</h2>
+	<div>
+		<label for="isbn-libro">ISBN del libro:</label>
+		<input type="text" id="isbn-libro" placeholder="Introduce el ISBN del libro">
+	</div>
+	<button id="localizar-libro-boton">Localizar</button>
+	<p id="localizar-libro-mensaje"></p>
+
+	<!-- Aquí se mostrará la ubicación del libro -->
+	<div id="ubicacion-libro">
+		<p><strong>Pasillo:</strong> <span id="pasillo-libro"></span></p>
+		<p><strong>Estantería:</strong> <span id="estanteria-libro"></span></p>
+		<p><strong>Estante:</strong> <span id="estante-libro"></span></p>
+	</div>
+</section>
+
+	<!-- ---------------------DEVOLUCION-PRESTAMO------------------------------------ -->
 	<section id="devolucion-prestamo">
 		<h2>Devolución/Préstamo de libros</h2>
 		<div>

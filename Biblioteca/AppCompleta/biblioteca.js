@@ -275,7 +275,7 @@ function actualizarVistaLectores() {
         encabezado.style.textAlign = 'left'; // Alineación del texto
     });
 }
-// ------------------------------------------------ALTA LEIBRO-------------------------------------------------------------
+// ------------------------------------------------ALTA LIBRO-------------------------------------------------------------
   // Añadir el evento de click al botón
 
   //0862	9781234567890	Juan Pérez	El Gran Libro!	Editorial XYZ	4
@@ -372,8 +372,217 @@ document.getElementById('devolucion-boton').addEventListener("click", function()
 
 
 
+//----------------------------------------------------------------------------------------------------------------------------------------------------------------------
+//------------------------------------------------------------------------------BOTONES IMPLEMENTADOS LIBRO------------------------------------------------------------------------------
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+// ------------------------------------------------ALTA LECTOR-------------------------------------------------------------
+
+document.getElementById('alta-lector-boton').addEventListener('click', () => {
+    // Limpiar cualquier mensaje previo
+    const mensajePrevio = document.getElementById('alta-lector-mensaje');
+    mensajePrevio.textContent = ""; // Borra el contenido previo
+
+    // Recogemos los valores introducidos
+    const numSocio = document.getElementById('alta-lector-numSocio').value;
+    const nombre = document.getElementById('alta-lector-nombre').value;
+    const apellido = document.getElementById('alta-lector-apellido').value;
+    const telefono = document.getElementById('alta-lector-telefono').value;
+    const email = document.getElementById('alta-lector-email').value;
+
+    let texto = "";
+    let color = "red";
+
+    // Si la función altaLector() devuelve false (significa que se agregó bien)...
+    if (!altaLector(numSocio, nombre, apellido, telefono, email)) {
+        // Limpiar los campos
+        document.getElementById('alta-lector-numSocio').value = "";
+        document.getElementById('alta-lector-nombre').value = "";
+        document.getElementById('alta-lector-apellido').value = "";
+        document.getElementById('alta-lector-telefono').value = "";
+        document.getElementById('alta-lector-email').value = "";
+
+        texto = "Lector añadido exitosamente";
+        color = "green"; // Mensaje en verde
+    } else {
+        texto = "Error en los datos";
+    }
+
+    // Mostrar mensaje de éxito o error
+    mensajePrevio.textContent = texto;
+    mensajePrevio.style.color = color;
+});
 
 
+// ------------------------------------------------MODIFICAR LIBRO-------------------------------------------------------------
+document.getElementById('modif-libro-boton').addEventListener('click', () => {
+    // Limpiar mensaje previo
+    const mensaje = document.getElementById('modif-libro-mensaje');
+    mensaje.textContent = "";
+
+    // Recoger valores
+    const codLibro = document.getElementById('modif-libro-codLibro').value;
+    const atributo = document.getElementById('modif-libro-atributo').value;
+    const valor = document.getElementById('modif-libro-valor').value;
+
+    let texto = "";
+    let color = "red";
+
+    // Intentar modificar el libro
+    if (!modifLibro(codLibro, atributo, valor)) {
+        texto = "Modificación realizada con éxito.";
+        color = "green";
+    } else {
+        texto = "Error en la modificación.";
+    }
+
+    // Mostrar mensaje en pantalla
+    mensaje.textContent = texto;
+    mensaje.style.color = color;
+});
+
+
+// ------------------------------------------------MODIFICAR LECTOR-------------------------------------------------------------
+
+document.getElementById('modif-lector-boton').addEventListener('click', () => {
+    // Limpiar mensaje previo
+    const mensaje = document.getElementById('modif-lector-mensaje');
+    mensaje.textContent = "";
+
+    // Obtener valores del formulario
+    const numSocio = document.getElementById('modif-lector-socio').value;
+    const atributo = document.getElementById('modif-lector-atributo').value;
+    const valor = document.getElementById('modif-lector-valor').value;
+
+    let texto = "";
+    let color = "red";
+
+    // Confirmación antes de modificar
+    if (confirm(`¿Seguro que quieres modificar el atributo ${atributo} del socio ${numSocio}?`)) {
+        if (!modifLector(numSocio, atributo, valor)) {
+            texto = `El atributo "${atributo}" ha sido modificado correctamente.`;
+            color = "green";
+        } else {
+            texto = "Error: número de socio no válido o dato incorrecto.";
+        }
+    } else {
+        texto = "Operación cancelada.";
+    }
+
+    // Mostrar mensaje en pantalla
+    mensaje.textContent = texto;
+    mensaje.style.color = color;
+});
+
+
+// ------------------------------------------------BAJA DE LIBRO-------------------------------------------------------------
+
+document.getElementById('baja-libro-boton').addEventListener('click', () => {
+    // Limpiar mensaje previo
+    const mensaje = document.getElementById('baja-libro-mensaje');
+    mensaje.textContent = "";
+
+    // Obtener el código del libro
+    const codLibro = document.getElementById('baja-libro-codigo').value;
+
+    let texto = "";
+    let color = "red";
+
+    // Confirmación antes de dar de baja
+    if (confirm(`¿Seguro que quieres dar de baja el libro con código ${codLibro}?`)) {
+        if (!bajaLibro(codLibro)) {
+            texto = "Libro dado de baja correctamente.";
+            color = "green";
+        } else {
+            texto = "Error: código de libro no válido o no encontrado.";
+        }
+    } else {
+        texto = "Operación cancelada.";
+    }
+
+    // Mostrar mensaje en pantalla
+    mensaje.textContent = texto;
+    mensaje.style.color = color;
+});
+
+
+// ------------------------------------------------BAJA DE LECTOR-------------------------------------------------------------
+
+document.getElementById('baja-lector-boton').addEventListener('click', () => {
+    // Limpiar mensaje previo
+    const mensaje = document.getElementById('baja-lector-mensaje');
+    mensaje.textContent = "";
+
+    // Obtener el número de socio
+    const numSocio = document.getElementById('baja-lector-numSocio').value;
+
+    let texto = "";
+    let color = "red";
+
+    // Intentar dar de baja
+    if (!bajaLector(numSocio)) {
+        texto = "Lector dado de baja correctamente.";
+        color = "green";
+    } else {
+        texto = "Error: número de socio no válido o no encontrado.";
+    }
+
+    // Mostrar mensaje en pantalla
+    mensaje.textContent = texto;
+    mensaje.style.color = color;
+});
+// ------------------------------------------------BUSCAR LIBRO-------------------------------------------------------------
+
+document.getElementById('buscar-libro-boton').addEventListener('click', () => {
+    // Limpiar mensaje previo
+    const mensaje = document.getElementById('buscar-libro-mensaje');
+    mensaje.textContent = "";
+
+    // Obtener valores del formulario
+    const atributo = document.getElementById('buscar-libro-atributo').value;
+    const valor = document.getElementById('buscar-libro-valor').value;
+
+    let texto = "";
+    let color = "red";
+
+    // Comprobar si el libro está disponible
+    if (!hayLibro(atributo, valor)) {
+        texto = "✅ El libro está disponible.";
+        color = "green";
+    } else {
+        texto = "❌ El libro no está disponible o está dado de baja.";
+    }
+
+    // Mostrar mensaje en pantalla
+    mensaje.textContent = texto;
+    mensaje.style.color = color;
+});
+// ------------------------------------------------LOCALIZAR LIBRO-------------------------------------------------------------
+document.getElementById('localizar-libro-boton').addEventListener('click', () => {
+    // Limpiar mensaje y la ubicación previa
+    const mensaje = document.getElementById('localizar-libro-mensaje');
+    mensaje.textContent = "";
+    document.getElementById('pasillo-libro').textContent = "";
+    document.getElementById('estanteria-libro').textContent = "";
+    document.getElementById('estante-libro').textContent = "";
+
+    // Obtener el ISBN introducido
+    const isbn = document.getElementById('isbn-libro').value;
+    let texto = "";
+    let color = "red";
+
+    // Llamar a la función dondeLibro
+    if (!dondeLibro(isbn)) {
+        texto = "✅ El libro ha sido localizado.";
+        color = "green";
+    } else {
+        texto = "❌ No se encontró el libro con ese ISBN.";
+    }
+
+    // Mostrar el mensaje con color según el resultado
+    mensaje.textContent = texto;
+    mensaje.style.color = color;
+});
 
 
 
@@ -741,7 +950,7 @@ function comprobarTelefonos() {
 
 /*-------------------------------------------------------FUNCIONES LIBRO-------------------------------------------------*/
 
-function bajaLector() {
+function bajaLibro() {
 
     let codLibro = prompt("Introduzca el codigo del libro a dar de baja");
 
