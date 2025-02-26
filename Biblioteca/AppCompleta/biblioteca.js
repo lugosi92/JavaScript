@@ -102,6 +102,8 @@ document.getElementById('importar-boton').addEventListener('click', async () => 
             if (dato[0] !== "codLibro" && dato.every(d => d.trim() !== "" && d !== "undefined")) {  // Validación extra
                 let libro = new Libros(dato[0], dato[1], dato[2],
                     dato[3], dato[4], dato[5], false, null, manga);
+                    console.log("Número de socio leído:", dato[0]);
+
             arrayLibros.push(libro);
                 
             }
@@ -238,7 +240,7 @@ function actualizarVistaLectores() {
         
         // Crear las celdas para cada lector
         fila.innerHTML = `
-            <td>${lector.socio}</td>
+            <td>${lector.numSocio}</td>
             <td>${lector.nombre}</td>
             <td>${lector.apellido}</td>
             <td>${lector.telefono}</td>
@@ -314,11 +316,11 @@ function actualizarVistaLectores() {
 
 
 // ------------------------------------ PRÉSTAMO ------------------------------------
+// Event Listener para el préstamo de libros
 document.getElementById('prestamo-boton').addEventListener("click", function() {
     // Limpiar mensajes
     const mensaje = document.getElementById('prestamo-mensajeError');
     if (mensaje) mensaje.remove();
-
 
     const numSocio = document.getElementById('devolucion-prestamo-socio').value;
     const codLibro = document.getElementById('devolucion-prestamo-libro').value;
@@ -335,19 +337,14 @@ document.getElementById('prestamo-boton').addEventListener("click", function() {
     mensajePrestamo.innerHTML = mensajeError;
     mensajePrestamo.style.color = "red";
 
-    document.getElementById('prestamo-boton').appendChild(mensajePrestamo);
-
-
-   
+    document.getElementById('prestamo-boton').after(mensajePrestamo);
 });
 
 // ----------------------------------- DEVOLUCIÓN -----------------------------------
 document.getElementById('devolucion-boton').addEventListener("click", function() {
-
     // Limpiar mensajes
     const mensaje = document.getElementById('devolucion-mensajeError');
     if (mensaje) mensaje.remove();
-
 
     const numSocio = document.getElementById('devolucion-prestamo-socio').value;
     const codLibro = document.getElementById('devolucion-prestamo-libro').value;
@@ -364,10 +361,17 @@ document.getElementById('devolucion-boton').addEventListener("click", function()
     mensajeDevolucion.innerHTML = mensajeError;
     mensajeDevolucion.style.color = "red";
 
-    document.getElementById('devolucion-boton').appendChild(mensajeDevolucion);
-
-
+    document.getElementById('devolucion-boton').after(mensajeDevolucion);
 });
+
+
+
+
+
+
+
+
+
 
 
 
@@ -420,7 +424,7 @@ document.getElementById('modif-libro-boton').addEventListener('click', () => {
     const mensaje = document.getElementById('modif-libro-mensaje');
     mensaje.textContent = "";
 
-    // Recoger valores
+    // Recoger valores del formulario
     const codLibro = document.getElementById('modif-libro-codLibro').value;
     const atributo = document.getElementById('modif-libro-atributo').value;
     const valor = document.getElementById('modif-libro-valor').value;
@@ -429,7 +433,7 @@ document.getElementById('modif-libro-boton').addEventListener('click', () => {
     let color = "red";
 
     // Intentar modificar el libro
-    if (!modifLibro(codLibro, atributo, valor)) {
+    if (modifLibro(codLibro, atributo, valor)) {
         texto = "Modificación realizada con éxito.";
         color = "green";
     } else {
@@ -459,7 +463,7 @@ document.getElementById('modif-lector-boton').addEventListener('click', () => {
 
     // Confirmación antes de modificar
     if (confirm(`¿Seguro que quieres modificar el atributo ${atributo} del socio ${numSocio}?`)) {
-        if (!modifLector(numSocio, atributo, valor)) {
+        if (modifLector(numSocio, atributo, valor)) {
             texto = `El atributo "${atributo}" ha sido modificado correctamente.`;
             color = "green";
         } else {
@@ -476,7 +480,6 @@ document.getElementById('modif-lector-boton').addEventListener('click', () => {
 
 
 // ------------------------------------------------BAJA DE LIBRO-------------------------------------------------------------
-
 document.getElementById('baja-libro-boton').addEventListener('click', () => {
     // Limpiar mensaje previo
     const mensaje = document.getElementById('baja-libro-mensaje');
@@ -490,7 +493,7 @@ document.getElementById('baja-libro-boton').addEventListener('click', () => {
 
     // Confirmación antes de dar de baja
     if (confirm(`¿Seguro que quieres dar de baja el libro con código ${codLibro}?`)) {
-        if (!bajaLibro(codLibro)) {
+        if (bajaLibro(codLibro)) {
             texto = "Libro dado de baja correctamente.";
             color = "green";
         } else {
@@ -504,7 +507,6 @@ document.getElementById('baja-libro-boton').addEventListener('click', () => {
     mensaje.textContent = texto;
     mensaje.style.color = color;
 });
-
 
 // ------------------------------------------------BAJA DE LECTOR-------------------------------------------------------------
 
@@ -520,7 +522,7 @@ document.getElementById('baja-lector-boton').addEventListener('click', () => {
     let color = "red";
 
     // Intentar dar de baja
-    if (!bajaLector(numSocio)) {
+    if (bajaLector(numSocio)) {
         texto = "Lector dado de baja correctamente.";
         color = "green";
     } else {
@@ -546,7 +548,7 @@ document.getElementById('buscar-libro-boton').addEventListener('click', () => {
     let color = "red";
 
     // Comprobar si el libro está disponible
-    if (!hayLibro(atributo, valor)) {
+    if (hayLibro(atributo, valor)) {
         texto = "✅ El libro está disponible.";
         color = "green";
     } else {
@@ -557,6 +559,7 @@ document.getElementById('buscar-libro-boton').addEventListener('click', () => {
     mensaje.textContent = texto;
     mensaje.style.color = color;
 });
+
 // ------------------------------------------------LOCALIZAR LIBRO-------------------------------------------------------------
 document.getElementById('localizar-libro-boton').addEventListener('click', () => {
     // Limpiar mensaje y la ubicación previa
@@ -571,8 +574,8 @@ document.getElementById('localizar-libro-boton').addEventListener('click', () =>
     let texto = "";
     let color = "red";
 
-    // Llamar a la función dondeLibro
-    if (!dondeLibro(isbn)) {
+    // Llamar a la función dondeLibro con el ISBN
+    if (dondeLibro(isbn)) {
         texto = "✅ El libro ha sido localizado.";
         color = "green";
     } else {
@@ -583,6 +586,14 @@ document.getElementById('localizar-libro-boton').addEventListener('click', () =>
     mensaje.textContent = texto;
     mensaje.style.color = color;
 });
+
+
+
+
+
+
+
+
 
 
 
@@ -673,8 +684,9 @@ function altaLibro(isbn, autor, titulo, editorial, ejemplares) {
 }
 
 /*-------------------------------------------------------BOTON (prestamo) - Funciones-------------------------------------------------*/
-function prestamoLibro(codLibro) {
 
+// Función para realizar el préstamo
+function prestamoLibro(codLibro) {
     let prestado = false;
 
     arrayLibros.forEach(libros => {
@@ -690,56 +702,51 @@ function prestamoLibro(codLibro) {
     return prestado;
 }
 
+// Función para procesar la solicitud de préstamo
 function solicitudPrestamo(numSocio, codLibro) {
-
-    //Crear fecha y aplicar formato
     let fecha = new Date();
     let fechaPrestamo = fecha.toLocaleDateString('es-ES');
-    let numPrestamo =  arrayPrestamos.length + 1; // Crear un número único para cada préstamo basado en el tamaño del array
+    let numPrestamo = arrayPrestamos.length + 1;
 
+    let libroDisponible = false;
+    let lectorValido = false;
 
-    let existe = false;
-
+    // Verificar si el libro existe y tiene ejemplares disponibles
     arrayLibros.forEach(libro => {
-        if (libro.codLibro == codLibro && libro.ejemplares > 0 && libro.fechaBajaLibro == null) {
-            existe = true;
+        if (libro.codLibro == codLibro && libro.ejemplares > 0 && !libro.fechaBajaLibro) {
+            libroDisponible = true;
         }
     });
 
-    existe = false;
-
+    // Verificar si el lector existe y no está dado de baja
     arrayLectores.forEach(lector => {
-        if (lector.numSocio == numSocio && lector.fechaBaja == null) {
-            existe = true;
+        if (lector.numSocio == numSocio && !lector.fechaBaja) {
+            lectorValido = true;
         }
     });
 
-    if (existe == true) {
-        if (prestamoLibro(codLibro) == true) {
-            numPrestamo++;
+    // Si el libro está disponible y el lector es válido, procesamos el préstamo
+    if (libroDisponible && lectorValido) {
+        if (prestamoLibro(codLibro)) {
             const prestamo = new Prestamos(numPrestamo, numSocio, codLibro, fechaPrestamo, null);
             arrayPrestamos.push(prestamo);
             arrayPrestamosVivos.push(prestamo);
+            return true; // Préstamo exitoso
         }
     }
-    console.log(arrayPrestamos);
-
-    if (!existe) {
-        console.log("La solicitud ha sido denegada");
-    }
-
+    return false; // No se pudo realizar el préstamo
 }
 
 /*-------------------------------------------------------BOTON (devolucion) - Funciones-------------------------------------------------*/
 
+// Función para devolver el libro
 function devolucionLibro(codLibro) {
-   
     let prestado = false;
 
     arrayLibros.forEach(libros => {
         if (libros.codLibro == codLibro) {
             libros.ejemplares = parseInt(libros.ejemplares);
-            console.log("Lista actualizada PRESTADO");
+            console.log("Lista actualizada DEVUELTO");
             libros.ejemplares += 1;
             prestado = true;
             console.log(arrayLibros);
@@ -749,21 +756,22 @@ function devolucionLibro(codLibro) {
     return prestado;
 }
 
+// Función para procesar la devolución del préstamo
 function devolucionPrestamos(numSocio, codLibro) {
-
-   
     let fecha = new Date();
     let fechaDevolucion = fecha.toLocaleDateString('es-ES');
 
     let existeLibro = false;
-    let existeLector = true;
+    let existeLector = false; // Se cambia a `false` por defecto
 
+    // Verificar si el lector existe
     arrayLectores.forEach(lector => {
         if(lector.numSocio == numSocio){
             existeLector = true;
         }
     });
 
+    // Verificar si el libro existe
     arrayLibros.forEach(libro => {
         if(libro.codLibro == codLibro){
             existeLibro = true;
@@ -771,20 +779,21 @@ function devolucionPrestamos(numSocio, codLibro) {
     });
 
     if(existeLector && existeLibro){
-        if(devolucionLibro(codLibro) == true){
-        
-            arrayPrestamosVivos.forEach(prestamo => {
-                if(prestamo.numSocio == numSocio && prestamo.codLibro == codLibro){
+        if(devolucionLibro(codLibro)) {
+            arrayPrestamosVivos.forEach((prestamo, index) => {
+                if(prestamo.numSocio == numSocio && prestamo.codLibro == codLibro && !prestamo.fechaDevolucion){
                     prestamo.fechaDevolucion = fechaDevolucion;
-                    console.log("--");
-                    atributoNum = prestamo.numPrestamo;
-                    arrayPrestamosVivos = arrayPrestamosVivos.filter(prestamoV => prestamoV.numPrestamo != atributoNum);
+                    console.log("Devolución registrada para préstamo ID:", prestamo.numPrestamo);
+
+                    // Eliminar el préstamo de los activos
+                    arrayPrestamosVivos.splice(index, 1);
                 }
             });
             console.log(arrayPrestamos);
+            return true; // Devolución exitosa
         }
     }
-    
+    return false; // No se pudo procesar la devolución
 }
 
 
@@ -808,6 +817,23 @@ function validarTelefono(telefono) {
 
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 //------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 //------------------------------------------------------------------------------FUNCIONES no usadas a implementar en la interfaz------------------------------------------------------------------------------
 //------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -816,107 +842,90 @@ function validarTelefono(telefono) {
 /*-------------------------------------------------------FUNCIONES LECTORES-------------------------------------------------*/
 
 
+// Función para dar de alta un lector
+function altaLector(numSocio, nombre, apellido, telefono, email) {
 
-function altaLector() {
-
-    //Validaciones de variables
+    // Validaciones de variables
     let regexSocio = /^8[0-9]{2}$/;
-    let nombreApellido = /^[a-zA-ZáéíóúÁÉÍÓÚñÑ-]+(\s[a-zA-ZáéíóúÁÉÍÓÚñÑ-]+)?$/;
+    let regexNombreApellido = /^[a-zA-ZáéíóúÁÉÍÓÚñÑ-]+(\s[a-zA-ZáéíóúÁÉÍÓÚñÑ-]+)?$/;
     let regexTelefono = /^[6789]\d{8}$/;
     let regexEmail = /^[a-zA-Z0-9]+@[a-zA-Z]+\.(es|com|net|fr|it|pt|org)$/;
 
-    //Solicitud de valores
-    let numSocio = prompt("Introduce el NºSOCIO entre 800-899");
-    let nombre = prompt("Introduce nombre");
-    let apellido = prompt("Introduce apellido");
-    let telefono = prompt("Introduce NºTelefono");
-    let email = prompt("Introduce email");
-
-    //Activar si existe valor nulo o no cumple con la logica de negocio
+    // Variables para errores
     let errorF = false;
     let errorV = false;
 
-    //Validar valores vacios
-    if (numSocio == null || nombre == null || apellido == null || telefono == null || email == null) {
+    // Validar valores vacíos
+    if (!numSocio || !nombre || !apellido || !telefono || !email) {
         errorF = true;
-        //Validar logica de negocio
-    } else if (!regexSocio.test(numSocio) || !nombreApellido.test(nombre) || !nombreApellido.test(apellido) ||
-        !regexTelefono.test(telefono) || !regexEmail.test(email)) {
-        errorV = true; 800
+    }
+    // Validar formato de los datos
+    else if (!regexSocio.test(numSocio) || !regexNombreApellido.test(nombre) ||
+        !regexNombreApellido.test(apellido) || !regexTelefono.test(telefono) ||
+        !regexEmail.test(email)) {
+        errorV = true;
     }
 
-    //Imprimri errores si viola la logica de negocio
-    if (errorF == true) {
-        alert("F --> No pueden existir datos vacios")
-    } else if (errorV == true) {
-        alert("V --> El formato de algun dato es incorrecto")
+    // Mostrar errores
+    if (errorF) {
+        alert("F --> No pueden existir datos vacíos");
+        return false;
+    } else if (errorV) {
+        alert("V --> El formato de algún dato es incorrecto");
+        return false;
     }
 
-    //Si no existe errores instanciar objeto en el listado de Lectores
-    if (errorF == false && errorV == false) {
-        const lector = new Lectores(numSocio, nombre, apellido, telefono, email, false, null);
-        arrayLectores.push(lector);
-    }
+    // Si no hay errores, agregar lector al array
+    const lector = new Lectores(numSocio, nombre, apellido, telefono, email, false, null);
+    arrayLectores.push(lector);
+
+    console.log("Lector agregado correctamente.");
     console.log(arrayLectores);
 
+    return true;
 }
 
-function bajaLector() {
-
-    let numSocio = prompt("Introduzca el NºSOCIO a dar de baja");
-
-    //Crear fecha y aplicar formato
+// Función para dar de baja un lector
+function bajaLector(numSocio) {
+    // Crear fecha y aplicar formato
     let fecha = new Date();
     let fechaEspañol = fecha.toLocaleDateString('es-ES');
 
-    //Si no encuentra el NºSOCIO salta el mensaje de error
     let encontrado = false;
 
+    // Buscar el lector en el array y marcarlo como dado de baja
     arrayLectores.forEach(lector => {
-        //Comprobar que existe
-        if (lector.numSocio == numSocio) {
-            //Confirmar baja
+        if (lector.numSocio === numSocio) {
             lector.bajaLector = true;
-            lector.fechaBajaLibro = fechaEspañol;
-            //Imprimri datos actualizados por consola
-            console.log("DATOS ACTUALIZADOS " + lector.nombre + " HA SIDO DADO DE BAJA");
+            lector.fechaBajaLector = fechaEspañol;
+            console.log("DATOS ACTUALIZADOS: " + lector.nombre + " HA SIDO DADO DE BAJA");
             console.log(arrayLectores);
-            //Error no se cumplira
             encontrado = true;
         }
     });
+
     if (!encontrado) {
-        console.log("E --> No se ha encontrado ningun socio con ese numero")
+        console.log("E --> No se ha encontrado ningún socio con ese número");
     }
 
-
+    // Retornar true si se encontró el lector y se dio de baja, de lo contrario false
+    return encontrado;
 }
 
-function modifLector() {
-
-    let numSocio = prompt("Introduzca el NºSOCIO a modficiar");
-
-    //Si no encuentra el NºSOCIO salta el mensaje de error
+function modifLector(numSocio, atributo, nuevoValor) {
     let encontrado = false;
 
     arrayLectores.forEach(lector => {
         if (lector.numSocio == numSocio) {
-            //PEDIR VALORES Y MODIFICAR
-            atributo = prompt("Introduzca el atributo a modificar");
-            nuevoValor = prompt("Introduzca el nuevo valor");
-            lector[atributo] = nuevoValor;
-            //IMPRIMIR LISTA
-            console.log("LISTA ACTUALIZADA");
-            console.log(arrayLectores);
-            //ERROR NO SALTA
+            lector[atributo] = nuevoValor; // Modificar atributo
+            console.log("LISTA ACTUALIZADA:", arrayLectores);
             encontrado = true;
         }
     });
-    if (!encontrado) {
-        console.log("E --> No se ha encontrado ningun socio con ese numero")
-    }
 
+    return encontrado; // Devolver `true` si encontró y modificó, `false` si no
 }
+
 
 function comprobarEmails() {
 
@@ -950,94 +959,86 @@ function comprobarTelefonos() {
 
 /*-------------------------------------------------------FUNCIONES LIBRO-------------------------------------------------*/
 
-function bajaLibro() {
-
-    let codLibro = prompt("Introduzca el codigo del libro a dar de baja");
-
-    //Crear fecha y aplicar formato
+// Función para dar de baja un libro
+function bajaLibro(codLibro) {
+    // Crear fecha y aplicar formato
     let fecha = new Date();
     let fechaEspañol = fecha.toLocaleDateString('es-ES');
 
-    //Si no encuentra el NºSOCIO salta el mensaje de error
     let encontrado = false;
 
+    // Buscar el libro en el array y marcarlo como dado de baja
     arrayLibros.forEach(libro => {
-        //Comprobar que existe
-        if (libro.codLibro == codLibro) {
-            //Confirmar baja
+        if (libro.codLibro === codLibro) {
             libro.bajaLibro = true;
             libro.fechaBajaLibro = fechaEspañol;
-            //Imprimri datos actualizados por consola
-            console.log("DATOS ACTUALIZADOS " + libro.titulo + " HA SIDO DADO DE BAJA");
+            console.log("DATOS ACTUALIZADOS: " + libro.titulo + " HA SIDO DADO DE BAJA");
             console.log(arrayLibros);
-            //Error no se cumplira
             encontrado = true;
         }
     });
+
     if (!encontrado) {
-        console.log("E --> No se ha encontrado ningun codigo con ese numero")
+        console.log("E --> No se ha encontrado ningún libro con ese código");
     }
 
-
+    // Retornar true si se encontró el libro y se dio de baja, de lo contrario false
+    return encontrado;
 }
 
-function modifLibro() {
-
-    let codLibro = prompt("Introduzca el codigo del libro a modficiar");
-
-    //Si no encuentra el codigo salta el mensaje de error
+// Función para modificar libro
+function modifLibro(codLibro, atributo, nuevoValor) {
     let encontrado = false;
 
     arrayLibros.forEach(libro => {
-        if (libro.codLibro == codLibro) {
-            //PEDIR VALORES Y MODIFICAR
-            atributo = prompt("Introduzca el atributo a modificar");
-            nuevoValor = prompt("Introduzca el nuevo valor");
-            libro[atributo] = nuevoValor;
-            //IMPRIMIR LISTA
-            console.log("LISTA ACTUALIZADA");
-            console.log(arrayLibros);
-            //ERROR NO SALTA
-            encontrado = true;
+        if (libro.codLibro === codLibro) {
+            // Verificar que el atributo existe
+            if (libro.hasOwnProperty(atributo)) {
+                libro[atributo] = nuevoValor;
+                encontrado = true;
+                // Imprimir lista actualizada
+                console.log("LISTA ACTUALIZADA:", arrayLibros);
+            }
         }
     });
+
     if (!encontrado) {
-        console.log("E --> No se ha encontrado ningun codigo con ese numero")
+        console.log("No se ha encontrado ningún libro con ese código.");
+        return false;
     }
 
+    return true;
 }
 
-function hayLibro() {
-
-    let codLibroISBN = prompt("Introduce el ISBN o el codigo del libro a buscar");
+// Función para comprobar si un libro está disponible
+function hayLibro(atributo, valor) {
     let existe = false;
 
+    // Buscar el libro en el array usando el atributo y el valor
     arrayLibros.forEach(libro => {
-        if ((libro.codLibro == codLibroISBN || libro.isbn == codLibroISBN) && libro.bajaLibro == false) {
+        if ((libro[atributo] == valor) && libro.bajaLibro == false) {
             existe = true;
         }
     });
+
     return existe;
 }
 
-function dondeLibro() {
-    let codLibro = prompt("Introduce el codigo del libro");
+// Función para localizar un libro según el ISBN
+function dondeLibro(isbn) {
     let encontrado = false;
 
-
     arrayLibros.forEach(libro => {
-
-        if (libro.codLibro == codLibro) {
-            console.log("Pasillo " + libro.pasillo +
-                ", Estantería " + libro.estanteria +
-                ", Estante " + libro.estante);
+        if (libro.isbn == isbn) {
+            // Mostrar la ubicación del libro en la interfaz
+            document.getElementById('pasillo-libro').textContent = libro.pasillo;
+            document.getElementById('estanteria-libro').textContent = libro.estanteria;
+            document.getElementById('estante-libro').textContent = libro.estante;
             encontrado = true;
         }
     });
 
-    if (encontrado == false) {
-        console.log("No se encontro el libro");
-    }
+    return encontrado;
 }
 
 
