@@ -11,6 +11,8 @@ const arrayLibros = [];
 const arrayLectores = [];
 const arrayPrestamos = [];
 let arrayPrestamosVivos = [];
+let arrayFiltros = [];
+
 
 // FUNCIÓN PARA LEER ARCHIVOS CSV
 async function leerArchivo(file) {
@@ -224,11 +226,13 @@ function validarTelefono(telefono) {
 }
 
 
-// ------------------------------------------------4. Banco objeto-------------------------------------------------------------
+// ------------------------------------------------5. Banco objeto-------------------------------------------------------------
 
 let bancoLibros = [];
 
 function crearBancoObjetos() {
+    bancoLibros = []; // Limpiar antes de llenarlo
+
     arrayLibros.forEach(libro => {
         let libroBanco = {
             autor: libro.autor, 
@@ -239,35 +243,142 @@ function crearBancoObjetos() {
             ejemplares: libro.ejemplares,
             fechaBajaLibro: libro.fechaBajaLibro, 
             isbn: libro.isbn, 
-            titulo: libro.titulo, 
-    
-             
-           
-      
-           
+            titulo: libro.titulo
         };
         bancoLibros.push(libroBanco);
+    });
+    console.log(bancoLibros);
+}
+
+// ------------------------------------------------6. Vista Libro-------------------------------------------------------------
+
+
+
+document.getElementById("vista-libros-boton").addEventListener("click", function(){
+
+    caracter = document.getElementById("vista-libros-incluye").value;
+
+    if(caracter != null){
+        arrayFiltros = [];
+        arrayLibros.forEach(libro => {
+    
+           if(libro.titulo.includes(caracter)){
+                arrayFiltros.push(libro);
+            }
+        });
+    
+        console.log(arrayFiltros);
+        mostrarFiltros();
+    }else{
+        actualizarVistaLibros();
+    }
+   
+});
+
+function mostrarFiltros() {
+    let tabla = document.getElementById("vista-libros-tabla").getElementsByTagName('tbody')[0];
+    tabla.innerHTML = ""; // Limpia la tabla antes de actualizarla
+
+    arrayFiltros.forEach(libro => {
+        let fila = tabla.insertRow();
+        fila.innerHTML = `
+            <td>${libro.codLibro}</td>
+            <td>${libro.isbn}</td>
+            <td>${libro.autor}</td>
+            <td>${libro.titulo}</td>
+            <td>${libro.editorial}</td>
+            <td>${libro.ejemplares}</td>
+        `;
     });
 }
 
 
+// ------------------------------------------------7. Promesas------------------------------------------------------------
+
+document.getElementById("prestamo-boton").addEventListener("click" , function(){
+
+
+// PROMESA
+const promesaAnidada = new Promise((resolve, reject) => {
+
+
+//FUNCIONES
+function existeLibro(){
+
+    let existe = false;
+    arrayLibros.forEach(libro => {
+        if (libro.codLibro == codLibro && libro.ejemplares > 0 && !libro.fechaBajaLibro) {
+            libroDisponible = true;
+        }
+        existe =true;
+    });
+
+    return existe;
+}
+
+
+function existeLector(){
+    let existe = false;
+
+    arrayLectores.forEach(lector => {
+        if (lector.numSocio == numSocio && !lector.fechaBaja) {
+            lectorValido = true;
+        }
+        existe =true;
+    });
+    return existe;
+}
+
+function disponible(){
+
+    let fecha = new Date();
+    let fechaPrestamo = fecha.toLocaleDateString('es-ES');
+    let numPrestamo = arrayPrestamos.length + 1;
+
+    if (libroDisponible && lectorValido) {
+        if (prestamoLibro(codLibro)) {
+            const prestamo = new Prestamos(numPrestamo, numSocio, codLibro, fechaPrestamo, null);
+            arrayPrestamos.push(prestamo);
+            arrayPrestamosVivos.push(prestamo);
+            return true; // Préstamo exitoso
+        }
+    }
+    return false;
+}
 
 
 
+if(existeLibro() == true){
+    resolve(existeLibro() == true);
+}else if(existeLector() == true){
+    resolve(existeLector() == true);
+}else if(disponible() == true){
+    resolve(disponible() == true);
+}else{
+    reject("Error")
+}
+});
 
+// Consumir promesa
+promesaAnidada
+    .then(valor  => {
+        console.log(valor);
+        existeLibro();
+        existeLector();
+        disponible();
+    })
+    .catch(error => console.log(error));
 
-
-
-
+});
 
 
 // ------------------------------------------------ACTUALIZAR VISTA LIBROS-------------------------------------------------------------
 // Evento para actualizar la vista cuando se haga clic en el botón
-document.getElementById("vista-libros-boton").addEventListener("click", function() {
+// document.getElementById("vista-libros-boton").addEventListener("click", function() {
      
-    actualizarVistaLibros(); // Llama a la función para actualizar la tabla
+//     actualizarVistaLibros(); // Llama a la función para actualizar la tabla
 
-});
+// });
 
 
 function actualizarVistaLibros() {
@@ -573,40 +684,40 @@ function prestamoLibro(codLibro) {
     return prestado;
 }
 
-// Función para procesar la solicitud de préstamo
-function solicitudPrestamo(numSocio, codLibro) {
-    let fecha = new Date();
-    let fechaPrestamo = fecha.toLocaleDateString('es-ES');
-    let numPrestamo = arrayPrestamos.length + 1;
+// // Función para procesar la solicitud de préstamo
+// function solicitudPrestamo(numSocio, codLibro) {
+//     let fecha = new Date();
+//     let fechaPrestamo = fecha.toLocaleDateString('es-ES');
+//     let numPrestamo = arrayPrestamos.length + 1;
 
-    let libroDisponible = false;
-    let lectorValido = false;
+//     let libroDisponible = false;
+//     let lectorValido = false;
 
-    // Verificar si el libro existe y tiene ejemplares disponibles
-    arrayLibros.forEach(libro => {
-        if (libro.codLibro == codLibro && libro.ejemplares > 0 && !libro.fechaBajaLibro) {
-            libroDisponible = true;
-        }
-    });
+//     // Verificar si el libro existe y tiene ejemplares disponibles
+//     arrayLibros.forEach(libro => {
+//         if (libro.codLibro == codLibro && libro.ejemplares > 0 && !libro.fechaBajaLibro) {
+//             libroDisponible = true;
+//         }
+//     });
 
-    // Verificar si el lector existe y no está dado de baja
-    arrayLectores.forEach(lector => {
-        if (lector.numSocio == numSocio && !lector.fechaBaja) {
-            lectorValido = true;
-        }
-    });
+//     // Verificar si el lector existe y no está dado de baja
+//     arrayLectores.forEach(lector => {
+//         if (lector.numSocio == numSocio && !lector.fechaBaja) {
+//             lectorValido = true;
+//         }
+//     });
 
-    // Si el libro está disponible y el lector es válido, procesamos el préstamo
-    if (libroDisponible && lectorValido) {
-        if (prestamoLibro(codLibro)) {
-            const prestamo = new Prestamos(numPrestamo, numSocio, codLibro, fechaPrestamo, null);
-            arrayPrestamos.push(prestamo);
-            arrayPrestamosVivos.push(prestamo);
-            return true; // Préstamo exitoso
-        }
-    }
-    return false; // No se pudo realizar el préstamo
-}
+//     // Si el libro está disponible y el lector es válido, procesamos el préstamo
+//     if (libroDisponible && lectorValido) {
+//         if (prestamoLibro(codLibro)) {
+//             const prestamo = new Prestamos(numPrestamo, numSocio, codLibro, fechaPrestamo, null);
+//             arrayPrestamos.push(prestamo);
+//             arrayPrestamosVivos.push(prestamo);
+//             return true; // Préstamo exitoso
+//         }
+//     }
+//     return false; // No se pudo realizar el préstamo
+// }
 
 /*-------------------------------------------------------BOTON (devolucion) - Funciones-------------------------------------------------*/
 
