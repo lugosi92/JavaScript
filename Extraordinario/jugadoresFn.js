@@ -69,7 +69,7 @@ arrayJugadores.forEach(jugador => {
 
 
 
- //Pasamos como parametro array o femenino o masculino, los arryas de posiciones
+ //Pasamos como parametro femenino o masculino y los arrays de posiciones
 function crearPosiciones(arrayJugadores, portertos, defensas, centros, delanteros){
 
     //Recorre los jugadores
@@ -106,7 +106,7 @@ console.table({ portertosF, defensasF, centrosF, delanterosF });
 
 
 /*----------------------------------PASO 4 - CREAR EQUIPOS -------------------------------------------*/
-//Listado donde se almacenan los Todos los equipos
+//Listado donde se almacenan todos los equipos
 EquiposM =[];
 EquiposF =[];
 
@@ -116,8 +116,8 @@ equipoF = [];
 
 function crearEquipos(EquiposMF, equipoMF, portertos, defensas, centros, delanteros){
 
-    //Las posiciones han sido creadas para usar la condicion aqui y leer varias veces el listado,
-    //mientras que cada array cumpla con el minimo de jugadores por qeuipo se crearan equipoMFs
+    //Las posiciones han sido creadas para usarlas como condicion aqui y leer varias veces el listado,
+    //mientras que cada array cumpla con el minimo de jugadores por equipo se crearan equipoMFs
     while(portertos.length > 1 && defensas.length > 4 &&
         centros.length > 3 && delanteros.length >3){
         
@@ -177,7 +177,7 @@ let reservasF = [];
 
 function crearReservas(reservas, portertos, defensas, centros, delanteros){
 
-    //Mientras que algun array contenga datos se itera
+    //Mientras que algun array contenga datos se itera sobre las posiciones
     while (portertos.length > 0 || defensas.length > 0 ||
         centros.length > 0 || delanteros.length > 0) {
 
