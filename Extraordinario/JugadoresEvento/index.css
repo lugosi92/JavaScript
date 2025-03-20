@@ -1,0 +1,133 @@
+/* Estilos globales */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: Arial, sans-serif;
+}
+
+body {
+    background-color: #f4f7fc;
+    color: #333;
+    padding: 20px;
+}
+
+/* Títulos */
+h1, h2 {
+    color: #2c3e50;
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+/* Contenedor principal */
+.vistas-jugadores, .posiciones, .equipos {
+    margin-bottom: 40px;
+}
+
+.equipos {
+    margin-top: 30px;
+    padding: 25px;
+    background: #ffffff;
+    border-radius: 12px;
+    box-shadow: 0 5px 10px rgba(0, 0, 0, 0.1);
+    border-left: 5px solid #3498db;
+}
+
+.equipos h2 {
+    text-align: center;
+    color: #2c3e50;
+    margin-bottom: 15px;
+    font-size: 22px;
+}
+
+/* Estilos para tablas */
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 10px;
+    background-color: #fff;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    border-radius: 8px;
+    overflow: hidden;
+}
+
+th, td {
+    padding: 12px;
+    text-align: left;
+    border: 1px solid #ddd;
+}
+
+th {
+    background-color: #2c3e50;
+    color: white;
+    font-weight: bold;
+    text-align: center;
+    font-size: 16px;
+}
+
+td {
+    background-color: #ecf0f1;
+    text-align: center;
+    font-size: 15px;
+}
+
+tr:nth-child(even) td {
+    background-color: #dfe6e9;
+}
+
+tr:hover td {
+    background-color: #bdc3c7;
+}
+
+/* Botones */
+button {
+    background-color: #3498db;
+    color: white;
+    border: none;
+    padding: 12px 25px;
+    font-size: 16px;
+    cursor: pointer;
+    border-radius: 6px;
+    margin-top: 20px;
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+    transition: 0.3s ease;
+    box-shadow: 0 3px 5px rgba(0, 0, 0, 0.2);
+}
+
+button:hover {
+    background-color: #2980b9;
+    transform: scale(1.05);
+}
+
+/* Input de archivo */
+#file-input {
+    padding: 10px;
+    margin-top: 15px;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+/* Estilo para secciones */
+section {
+    margin-bottom: 30px;
+}
+
+/* Diseño responsive */
+@media screen and (max-width: 768px) {
+    table, th, td {
+        font-size: 14px;
+    }
+
+    button {
+        width: 100%;
+    }
+
+    .equipos {
+        padding: 15px;
+    }
+}

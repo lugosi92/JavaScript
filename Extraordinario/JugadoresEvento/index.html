@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+	<!-- IMPORTAR CSS -->
+	<link rel="stylesheet" href="index.css">
+</head>
+<body>
+
+	<h1>Adjuntar Jugadores</h1>
+	<input type="file" id="file-input" /><br><br>
+	<button id="importar-boton">Importar</button>
+
+<div class = "vistas-jugadores">
+	<h1>JUGADORES</h1>
+    <!---------------------- VISTA JUGADORES MASUCLINOS------------------------- -->	
+	<section id="vista-masculinos">
+		<h2>Jugadores Masculinos</h2>
+		<table id="vista-masculino-tabla">
+			<thead>
+				<tr>
+					<th>Nombre</th>
+					<th>Gener</th>
+					<th>Apellido</th>
+					<th>Puesto</th>
+					<th>Equipos</th>
+				</tr>
+			</thead>
+			<tbody>
+			</tbody>
+		</table>
+	</section>
+
+	<!---------------------- VISTA JUGADORES FEMENINOS------------------------- -->	
+	<section id="vista-masculinos">
+		<h2>Jugadores Femeninos</h2>
+		<table id="vista-femenino-tabla">
+			<thead>
+				<tr>
+					<th>Nombre</th>
+					<th>Gener</th>
+					<th>Apellido</th>
+					<th>Puesto</th>
+					<th>Equipos</th>
+				</tr>
+			</thead>
+			<tbody>
+			</tbody>
+		</table>
+	</section>
+</div>
+   
+<div class = "posiciones">
+	<h1>POSICIONES</h1>
+	<!----------------------POSICIONES MASCULINO------------------------- -->	
+	<section id="posiciones-masculino">
+		<h2>Jugadores Masculinos</h2>
+		<table id="posiciones-masculino-tabla">
+			<thead>
+				<tr>
+					<th>Nombre</th>
+					<th>Posición</th>
+				</tr>
+			</thead>
+			<tbody>
+			</tbody>
+		</table>
+
+		<button id="posiciones-input-M">Ver posiciones </button>
+
+	</section>
+
+
+	<!----------------------POSICIONES FEMENINO------------------------- -->	
+	<section id="posiciones-femenino">
+		<h2>Jugadores Femeninos</h2>
+		<table id="posiciones-femenino-tabla">
+				<thead>
+					<tr>
+						<th>Nombre</th>
+						<th>Posición</th>
+					</tr>
+				</thead>
+				<tbody>
+				</tbody>
+		</table>
+		<button id="posiciones-input-F">Ver posiciones </button>
+	</section>
+
+</div>
+<div class = "equipos">
+      <!----------------------EQUIPOS MASCULINOS------------------------- -->
+	  <h1>EQUIPOS</h1>
+	  <section>	
+		<h2>Equipos Masculino</h2>
+		<table id="equipos-masculino-tabla">
+			<thead>
+				<tr>
+					<th>Equipo</th>
+					<th>Jugadores</th>
+				</tr>
+			</thead>
+			<tbody>
+				<!--  -->
+			</tbody>
+		</table>
+		<button id="equipos-input-M">Ver posiciones </button>
+	</section>
+     <!----------------------EQUIPOS FEMENINO------------------------- -->	
+	 <section>
+		<h2>Equipos Femenino</h2>
+		<table id="equipos-femenino-tabla">
+			<thead>
+				<tr>
+					<th>Equipo</th>
+					<th>Jugadores</th>
+				</tr>
+			</thead>
+			<tbody>
+				<!---->
+			</tbody>
+		</table>
+		<button id="equipos-input-F">Ver posiciones </button>
+		<script src = "jugadoresFn.js"></script>
+	</section>
+</body>
+</html>
