@@ -20,11 +20,11 @@ h1, h2 {
 }
 
 /* Contenedor principal */
-.vistas-jugadores, .posiciones, .equipos {
+.vistas-jugadores, .posiciones, .equipos, .reservas {
     margin-bottom: 40px;
 }
 
-.equipos {
+.vistas-jugadores, .posiciones,.equipos, .reservas{
     margin-top: 30px;
     padding: 25px;
     background: #ffffff;
