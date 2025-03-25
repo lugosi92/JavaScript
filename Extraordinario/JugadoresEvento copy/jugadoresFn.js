@@ -26,8 +26,8 @@ delanterosF = [];
 
 // EQUIPOS
 //Listado donde se almacenan todos los equipos
-equiposM =[];
-equiposF =[];
+EquiposM =[];
+EquiposF =[];
 
 //Listado para crear cada equipo
 equipoM = [];
@@ -61,9 +61,9 @@ document.getElementById('importar-boton').addEventListener('click', async () => 
      arrayJugadores.forEach(jugador => {
         dato = jugador.split(";");
         if(dato[1] == "M"){
-            Masculinos.push(dato);
+            Masculinos.push(jugador);
         }else if(dato[1] == "F"){
-            Femeninos.push(dato);
+            Femeninos.push(jugador);
         }
      });
 
@@ -76,8 +76,8 @@ function mostrarMasculinos() {
     let tabla = document.getElementById("vista-masculino-tabla").getElementsByTagName('tbody')[0];
     tabla.innerHTML = ""; // Limpia la tabla antes de actualizarla
 
-    Masculinos.forEach(dato => {
-      
+    Masculinos.forEach(jugador => {
+        let dato = jugador.split(";");
         let fila = tabla.insertRow();
         fila.innerHTML = `
             <td>${dato[0]}</td>
@@ -107,7 +107,8 @@ function mostrarFemeninos() {
     let tabla = document.getElementById("vista-femenino-tabla").getElementsByTagName('tbody')[0];
     tabla.innerHTML = ""; // Limpia la tabla antes de actualizarla
 
-    Femeninos.forEach(dato => {
+    Femeninos.forEach(jugador => {
+        let dato = jugador.split(";");
         let fila = tabla.insertRow();
         fila.innerHTML = `
             <td>${dato[0]}</td>
@@ -156,8 +157,10 @@ function posiciones(arrayPosiciones, id){
 
      // Aplanar el array de arrays
      let jugadoresPlanos = arrayPosiciones.flat();
+    console.log(jugadoresPlanos);
 
-     jugadoresPlanos.forEach(dato => {
+     jugadoresPlanos.forEach(jugador => {
+        let dato = jugador.split(";");
         let fila = tabla.insertRow();
         fila.innerHTML = `
             <td>${dato[0]}</td> 
@@ -166,6 +169,7 @@ function posiciones(arrayPosiciones, id){
     
      tabla.appendChild(fila);
     });
+console.log(arrayPosiciones);
 }
 
 function crearPosiciones(arrayJugadores,porteros, defensas, centros, delanteros){
@@ -177,20 +181,23 @@ function crearPosiciones(arrayJugadores,porteros, defensas, centros, delanteros)
     delanteros.length = 0;
 
    //Recorre los jugadores
-   arrayJugadores.forEach(dato => {
+   arrayJugadores.forEach(jugador => {
+       dato = jugador.split(";");
+
        //Se crean las posiciones
        if(dato[3] == "Portero" ){
-           porteros.push(dato);
+           porteros.push(jugador);
        }else if(dato[3] == "Defensa"){
-           defensas.push(dato);
+           defensas.push(jugador);
        }else if(dato[3] == "Centro"){
-           centros.push(dato);
+           centros.push(jugador);
        }else if(dato[3] == "Delantero"){
-           delanteros.push(dato);
+           delanteros.push(jugador);
        }
    });
 
    let posiciones = [porteros, defensas, centros, delanteros];
+   console.log(posiciones);
    return posiciones;
 }
 
@@ -202,13 +209,15 @@ function crearPosiciones(arrayJugadores,porteros, defensas, centros, delanteros)
 // Evento para mostrar EQUIPOS MASCULINOS
 document.getElementById('equipos-input-M').addEventListener('click', function () {
     let id = "equipos-masculino-tabla";
-    mostrarEquipos(crearEquipos(equiposM, porteros, defensas, centros, delanteros), id);
+    mostrarEquipos(crearEquipos(EquiposM, porteros, defensas, centros, delanteros), id);
+    console.log(EquiposM);
 });
 
 // Evento para mostrar EQUIPOS FEMENINOS
 document.getElementById('equipos-input-F').addEventListener('click', function () {
     let id = "equipos-femenino-tabla";
-    mostrarEquipos(crearEquipos(equiposF, porterosF, defensasF, centrosF, delanterosF), id);
+    mostrarEquipos(crearEquipos(EquiposF, porterosF, defensasF, centrosF, delanterosF), id);
+    console.log(EquiposF);
 });
 
 function mostrarEquipos(equipos, tablaId) {
@@ -218,7 +227,8 @@ function mostrarEquipos(equipos, tablaId) {
 
 
     let equiposPlano = equipos.flat();
-    equiposPlano.forEach(dato => {
+    equiposPlano.forEach(jugador => {
+        let dato = jugador.split(";");
         let fila = tabla.insertRow();
 
             if (dato[3] === "Portero") contador++;
@@ -233,25 +243,32 @@ function mostrarEquipos(equipos, tablaId) {
     });
 }
 
-function crearEquipos(equiposMF, porteros, defensas, centros, delanteros) { 
+function crearEquipos(EquiposMF, porteros, defensas, centros, delanteros) {
 
 
-    while (porteros.length > 0 && defensas.length >= 4 &&
-           centros.length >= 3 && delanteros.length >= 3) {
+    // Clonar arrays para evitar modificar los originales
+    let porterosCopia = [...porteros];
+    let defensasCopia = [...defensas];
+    let centrosCopia = [...centros];
+    let delanterosCopia = [...delanteros];
+
+    while (porterosCopia.length > 0 && defensasCopia.length >= 4 &&
+           centrosCopia.length >= 3 && delanterosCopia.length >= 3) {
         
         let equipoMF = [];
-        equipoMF.push(porteros.shift());
+        equipoMF.push(porterosCopia.shift());
 
-        for (let i = 0; i < 4; i++) equipoMF.push(defensas.shift());
-        for (let i = 0; i < 3; i++) equipoMF.push(centros.shift());
-        for (let i = 0; i < 3; i++) equipoMF.push(delanteros.shift());
+        for (let i = 0; i < 4; i++) equipoMF.push(defensasCopia.shift());
+        for (let i = 0; i < 3; i++) equipoMF.push(centrosCopia.shift());
+        for (let i = 0; i < 3; i++) equipoMF.push(delanterosCopia.shift());
 
         if (equipoMF.length === 11) {
-            equiposMF.push(equipoMF);
+            EquiposMF.push(equipoMF);
         }
     }
 
-    return equiposMF;
+    console.log(EquiposMF);
+    return EquiposMF;
 }
 
 // ------------------------------------------------RESERVAS RESERVAS-------------------------------------------------------------
@@ -274,10 +291,14 @@ document.getElementById('reservas-input-F').addEventListener('click', function (
 function mostrarReservas(reservas, tablaId) {
     let tabla = document.getElementById(tablaId).getElementsByTagName('tbody')[0];
     tabla.innerHTML = ""; 
-    console.log(reservas);
+    let contador = 0;
 
-    reservas.forEach(dato => {
+
+    let reservasPlano = reservas.flat();
+    reservasPlano.forEach(jugador => {
+        let dato = jugador.split(";");
         let fila = tabla.insertRow();
+            
         fila.innerHTML = `
             <td>${dato[0]}</td> 
              <td>${dato[3]}</td> 
