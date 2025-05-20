@@ -126,3 +126,41 @@ document.getElementById('importar-boton').addEventListener('click', async () => 
 });
 
 
+// ------------------------------------------------SECCION VISTA LIBRO-------------------------------------------------------------
+
+pVista = document.getElementById('cursor-sobre-vista-libros');
+
+document.getElementById('vista-libros').addEventListener('mouseenter', function(){
+
+    pVista.innerHTML = "Entraste en vista libro";
+
+});
+
+document.getElementById('vista-libros').addEventListener('mouseleave', function(){
+    
+   pVista.innerHTML = "Saliste de vista libro";
+
+});
+
+
+// ------------------------------------------------TAMAÑO Y LENGUAJE-------------------------------------------------------------
+ 
+
+ pn = document.getElementById('propiedades-navegador');
+
+codigo = document.createElement('p');
+alto = document.createElement('p');
+ancho = document.createElement('p');
+
+let mensajeCodigo = "Codigo del lenguaje: " + navigator.language;
+let mensajeAlto = "Alto de monitor: " + window.innerHeight;
+let mensajeAncho = "Ancho de monitor: " + window.innerWidth;
+
+codigo.innerHTML = mensajeCodigo;
+alto.innerHTML = mensajeAlto;
+ancho.innerHTML = mensajeAncho;
+
+
+pn.appendChild(codigo);
+pn.appendChild(alto);
+pn.appendChild(ancho);
